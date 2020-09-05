@@ -47,7 +47,7 @@ spring:
               args:
                 retries: 1 #需要进行重试的次数
                 series:
-                  - SERVER_ERROR #5开头的状态码 这个状态吗不是自己封装的返回code而是是浏览器的状态吗
+                  - SERVER_ERROR #5开头的状态码 这个状态码不是自己封装的返回code而是是浏览器的状态吗
                 statuses:
                   - BAD_REQUEST #502
                 methods:

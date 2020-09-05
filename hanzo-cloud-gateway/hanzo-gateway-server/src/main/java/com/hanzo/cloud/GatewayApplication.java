@@ -1,4 +1,4 @@
-package com.hanzo.cloud.com.hanzo.cloud;
+package com.hanzo.cloud;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

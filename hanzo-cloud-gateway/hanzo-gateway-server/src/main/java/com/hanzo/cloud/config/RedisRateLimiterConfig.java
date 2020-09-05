@@ -1,4 +1,4 @@
-package com.hanzo.cloud.com.hanzo.cloud.config;
+package com.hanzo.cloud.config;
 
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.context.annotation.Bean;
