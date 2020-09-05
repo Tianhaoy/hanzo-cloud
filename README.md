@@ -1,7 +1,7 @@
 # hanzo-cloud
 半藏微服务是基于SpringCloud(Hoxton.SR5)(最新) + SpringBoot(2.3.0.RELEASE)的 SaaS型微服务后端脚手架。
 核心技术采用SpringBoot、Nacos、Gateway、Fegin、Ribbon、Hystrix、JWT Token、Mybatis、Mysql、Redis、ElasticSearch、RabbitMQ、Seata、FastDFS等主要框架和中间件。
-希望能努力打造一套 SaaS基础框架 - 分布式微服务架构 - 持续集成 - 自动化部署K8s - 系统监测 的解决方案。 
+希望能努力打造一套 SaaS基础框架 - 分布式微服务架构 - 分布式XXL-Job - 持续集成 - 自动化部署K8s - 系统监测 的解决方案。 
 旨在帮助想要学习微服务的java er快速入门，实现基础能力，不涉及具体业务。具备注册中心、网关统一鉴权、授权管理、消息队列、搜索引擎、分布式事务、分布式定时任务等多个模块。
 ## 技术选型
 ### 后端技术

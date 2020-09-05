@@ -1,10 +1,8 @@
+spring:
+  profiles:
+    active: dev
 server:
   port: 6000
 
-boot:
-  admin:
-    client:
-      url: http://127.0.0.1:6101 #配置admin-server地址
-
 logging:
-  file: hanzo-demo-test.log #添加开启admin的日志监控
+  file.name: ./logs/hanzo-demo-test.log #添加开启admin的日志监控

@@ -11,5 +11,3 @@ spring:
     admin:
       discovery:
         ignored-services: ${spring.application.name}
-server:
-  port: 6101

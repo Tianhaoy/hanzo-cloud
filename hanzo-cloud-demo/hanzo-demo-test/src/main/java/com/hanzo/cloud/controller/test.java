@@ -1,6 +1,7 @@
 package com.hanzo.cloud.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,12 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @Description:
  */
 @RestController
+@Slf4j
 public class test {
 
     @RequestMapping(value = "/getFirst",method = RequestMethod.GET)
     public Object getFirst(){
         JSONObject obj = new JSONObject();
         obj.put("code",200);
+        log.info("get First...");
         return obj;
     }
 }
