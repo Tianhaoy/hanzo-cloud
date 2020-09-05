@@ -2,7 +2,7 @@ spring:
   profiles:
     active: dev
 server:
-  port: 6000
+  port: 6001
 
 logging:
   file.name: ./logs/hanzo-demo-test.log #添加开启admin的日志监控

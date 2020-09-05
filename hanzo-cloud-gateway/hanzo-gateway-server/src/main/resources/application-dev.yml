@@ -1,0 +1,72 @@
+server:
+  port: 6201
+
+spring:
+  #通过lettuce配置Redis
+  redis:
+    host: ${REDIS_HOST:127.0.0.1} # Redis服务器地址
+    database: 0 # Redis数据库索引（默认为0）
+    port: ${REDIS_PORT:6379} # Redis服务器连接端口
+    password: # Redis服务器连接密码（默认为空）
+    lettuce:
+      pool:
+        max-active: 8 # 连接池最大连接数(使用负值表示没有限制) 默认为8
+        max-idle: 8 # 连接池中的最大空闲连接 默认为8
+        max-wait: -1 # 连接池最大阻塞等待时间(使用负值表示没有限制) 默认为-1
+        min-idle: 0 # 连接池中的最小空闲连接 默认为 0
+      shutdown-timeout: 5000 # 连接超时时间（毫秒）
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false #表明gateway开启服务注册和发现的功能，并且spring cloud gateway自动根据服务发现为每一个服务创建了一个router，这个router将以服务名开头的请求路径转发到对应的服务。
+          lower-case-service-id: true #使用小写service-id
+          filters:
+            - StripPrefix=1 # 过滤规则 转发过滤前缀个数
+      routes: #配置路由路径   当上面的配置是true的时候配合Nacos从注册中心发现自动配置路由路径
+        - id: hanzo-demo-test
+          uri: lb://hanzo-demo-test #匹配后路由地址 lb代表从注册中心获取服务
+          order: 7000
+          predicates: # 路由条件 断言，路径相匹配的进行路由
+            - Path=/hanzo-demo-test/**
+          filters:
+            - StripPrefix=1
+            # 网关层限流 -> 请求太多默认会返回  HTTP->429
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 1 #每秒允许处理的请求数量
+                redis-rate-limiter.burstCapacity: 2 #每秒最大处理的请求数量
+                key-resolver: "#{@ipKeyResolver}" #限流策略，对应策略的Bean
+            # 网关层熔断 -> 服务降级
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/fallBack
+            # 网关层请求重试 HTTP状态码来确定是否进行重试。
+            - name: Retry
+              args:
+                retries: 1 #需要进行重试的次数
+                series:
+                  - SERVER_ERROR #5开头的状态码 这个状态吗不是自己封装的返回code而是是浏览器的状态吗
+                statuses:
+                  - BAD_REQUEST #502
+                methods:
+                  - GET
+                  - POST
+                backoff:
+                  firstBackoff: 10ms
+                  maxBackoff: 50ms
+                  factor: 2
+                  basedOnPreviousValue: false
+
+secure:
+  ignore:
+    urls: #配置白名单路径
+      - "/doc.html"
+      - "/swagger-resources/**"
+      - "/swagger/**"
+      - "/**/v2/api-docs"
+      - "/actuator/**"
+      - "/hanzo-auth-center/oauth/token"
+      - "/hanzo-auth-center/rsa/publicKey"
+

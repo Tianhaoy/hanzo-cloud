@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: dev
+server:
+  port: 6201
+
+logging:
+  file.name: ./logs/hanzo-gateway-server.log #添加开启admin的日志监控

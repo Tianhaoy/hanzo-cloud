@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class test {
 
     @RequestMapping(value = "/getFirst",method = RequestMethod.GET)
-    public Object getFirst(){
+    public Object getFirst() throws Exception {
         JSONObject obj = new JSONObject();
         obj.put("code",200);
         log.info("get First...");
-        return obj;
+        throw new Exception();
     }
 }
