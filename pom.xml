@@ -41,7 +41,8 @@
         <admin-starter-client.version>2.3.0</admin-starter-client.version>
         <nimbus-jose-jwt.version>8.16</nimbus-jose-jwt.version>
         <knife4j.version>2.0.4</knife4j.version>
-        <swagger.version>2.9.2</swagger.version>
+        <mybatis-plus.version>3.4.0</mybatis-plus.version>
+        <mysql-connector.version>8.0.16</mysql-connector.version>
         <!--<druid.version>1.1.10</druid.version>
         <hutool.version>4.5.7</hutool.version>
         <mybatis-generator.version>1.3.7</mybatis-generator.version>
@@ -50,7 +51,8 @@
         <spring-data-commons.version>2.3.0.RELEASE</spring-data-commons.version>
         <aliyun-oss.version>2.5.0</aliyun-oss.version>
         <logstash-logback.version>5.3</logstash-logback.version>
-        <minio.version>7.1.0</minio.version>-->
+        <minio.version>7.1.0</minio.version>
+        <swagger.version>2.9.2</swagger.version>-->
     </properties>
 
     <dependencies>
@@ -125,20 +127,33 @@
                 <artifactId>nimbus-jose-jwt</artifactId>
                 <version>${nimbus-jose-jwt.version}</version>
             </dependency>
-            <dependency>
+            <!--<dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
                 <version>${swagger.version}</version>
-            </dependency>
+            </dependency>-->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-micro-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
+            <!--swagger 增强版 knife4j包含前端ui包-->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
+            </dependency>
+            <!--mybatis-plus-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!--Mysql数据库驱动-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -22,15 +22,15 @@ spring:
           enabled: false #表明gateway开启服务注册和发现的功能，并且spring cloud gateway自动根据服务发现为每一个服务创建了一个router，这个router将以服务名开头的请求路径转发到对应的服务。
           lower-case-service-id: true #使用小写service-id
           filters:
-            - StripPrefix=1 # 过滤规则 转发过滤前缀个数
+            - StripPrefix=2 # 过滤规则 转发过滤前缀个数
       routes: #配置路由路径   当上面的配置是true的时候配合Nacos从注册中心发现自动配置路由路径
         - id: hanzo-demo-test
           uri: lb://hanzo-demo-test #匹配后路由地址 lb代表从注册中心获取服务
           order: 7000
           predicates: # 路由条件 断言，路径相匹配的进行路由
-            - Path=/hanzo-demo-test/**
+            - Path=/api/demo/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
             # 网关层限流 -> 请求太多默认会返回  HTTP->429
             - name: RequestRateLimiter
               args:
