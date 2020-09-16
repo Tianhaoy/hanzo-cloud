@@ -1,21 +1,20 @@
-package com.hanzo.cloud;
+package com.hanzo.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * @Author thy
- * @Date 2020/9/3 14:06
+ * @Date 2020/9/5 23:22
  * @Description:
  */
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-public class DemoApplication {
+public class GatewayApplication {
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class);
+        SpringApplication.run(GatewayApplication.class);
     }
 }

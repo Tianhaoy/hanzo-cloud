@@ -1,4 +1,4 @@
-package com.hanzo.cloud.config;
+package com.hanzo.monitor.config;
 
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import org.springframework.context.annotation.Configuration;

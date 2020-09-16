@@ -1,4 +1,4 @@
-package com.hanzo.cloud.config;
+package com.hanzo.gateway.config;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

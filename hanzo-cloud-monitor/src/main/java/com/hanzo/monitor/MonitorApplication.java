@@ -1,4 +1,4 @@
-package com.hanzo.cloud;
+package com.hanzo.monitor;
 
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;

@@ -1,4 +1,4 @@
-package com.hanzo.cloud.config;
+package com.hanzo.demo.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +25,7 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.hanzo.cloud.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.hanzo.demo.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

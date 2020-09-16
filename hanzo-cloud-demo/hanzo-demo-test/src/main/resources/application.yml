@@ -4,5 +4,11 @@ spring:
 server:
   port: 6001
 
+#logback
 logging:
-  file.name: ./logs/hanzo-demo-test.log #添加开启admin的日志监控
+  level:
+    root: INFO
+    org.springframework: INFO
+    com.hanzo: DEBUG
+    com.alibaba.druid.pool.DruidDataSource: DEBUG
+  file.name: ./logs/hanzo-demo-test.log

@@ -1,4 +1,4 @@
-package com.hanzo.cloud.controller;
+package com.hanzo.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
