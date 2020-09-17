@@ -12,6 +12,11 @@
     <artifactId>hanzo-demo-test</artifactId>
 
     <dependencies>
+        <!-- common公共模块-->
+        <dependency>
+            <groupId>com.hanzo.cloud</groupId>
+            <artifactId>hanzo-cloud-common</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -26,6 +31,7 @@
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-micro-spring-boot-starter</artifactId>
         </dependency>
+
     </dependencies>
 
     <!--构建工具-->

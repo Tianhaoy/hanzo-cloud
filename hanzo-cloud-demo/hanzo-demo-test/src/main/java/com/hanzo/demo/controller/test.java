@@ -1,6 +1,6 @@
 package com.hanzo.demo.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import com.hanzo.common.api.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +20,8 @@ public class test {
 
     @ApiOperation(value = "我是你爹",notes = "我是你爹")
     @RequestMapping(value = "/getFirst",method = RequestMethod.GET)
-    public Object getFirst() throws Exception {
-        JSONObject obj = new JSONObject();
-        obj.put("code",200);
+    public CommonResult getFirst(){
         log.info("get First...");
-        return obj;
+        return CommonResult.success("ok");
     }
 }
