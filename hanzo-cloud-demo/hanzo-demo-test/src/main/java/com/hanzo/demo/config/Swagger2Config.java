@@ -1,6 +1,7 @@
 package com.hanzo.demo.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import com.hanzo.common.config.BaseSwagger2Config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -14,28 +15,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 /**
  * @Author thy
  * @Date 2020/9/13 23:30
- * @Description:Swagger2增强版配置knife4j
+ * @Description:Swagger2增强版knife4j配置
  */
 @Configuration
 @EnableSwagger2
 @EnableKnife4j
-public class Swagger2Config {
-    @Bean
-    public Docket createRestApi(){
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.hanzo.demo.controller"))
-                .paths(PathSelectors.any())
-                .build();
-    }
-
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("hanzo-knife4j-test")
-                .description("测试demo-API文档")
-                .contact("hanzo")
-                .version("1.0")
-                .build();
-    }
+public class Swagger2Config extends BaseSwagger2Config {
 }

@@ -1,2 +1,15 @@
 server:
   port: 6001
+
+
+
+swagger2:
+  knife4j:
+    apiBasePackage: com.hanzo.demo.controller
+    enableSecurity: false
+    title: hanzo-knife4j-test
+    description: 测试demo-API文档
+    version: 1.0
+    contactName: thy
+    contactUrl: http://blog.babehome.com
+    contactEmail: 246965218@qq.com
