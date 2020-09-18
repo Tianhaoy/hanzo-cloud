@@ -43,8 +43,16 @@ Spring:
         min-idle: 0
 
 # mybatis 配置
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
+  #mybatis:
+  #mapper-locations: classpath:mapper/*.xml
+
+#mybatis-plus配置
+mybatis-plus:
+  type-aliases-package: com.hanzo.demo.entity
+  mapper-locations: lasspath:mapper/*.xml
+  #  开启数据库驼峰转换
+  configuration:
+    map-underscore-to-camel-case: true
 
 #接口文档信息配置
 swagger2:
