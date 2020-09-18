@@ -1,10 +1,8 @@
 package com.hanzo.gateway.controller;
 
+import com.hanzo.common.api.CommonResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Author thy
@@ -15,11 +13,7 @@ import java.util.Map;
 public class FallbackController {
 
     @GetMapping("/fallBack")
-    public Object fallBack() {
-        Map<String,Object> result = new HashMap<>();
-        result.put("data",null);
-        result.put("message","Get Request fallback!");
-        result.put("code",500);
-        return result;
+    public CommonResult fallBack() {
+        return CommonResult.failed("Get Request fallback!");
     }
 }

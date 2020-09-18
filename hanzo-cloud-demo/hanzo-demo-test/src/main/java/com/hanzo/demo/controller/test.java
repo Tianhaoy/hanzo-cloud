@@ -4,8 +4,7 @@ import com.hanzo.common.api.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -15,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Slf4j
-@Api(value = "testController",description = "我是你爹controller")
+@Api(value = "testController",description = "getFirst")
 public class test {
 
-    @ApiOperation(value = "我是你爹",notes = "我是你爹")
-    @RequestMapping(value = "/getFirst",method = RequestMethod.GET)
+    @ApiOperation(value = "getFirst",notes = "getFirst")
+    @GetMapping(value = "/getFirst")
     public CommonResult getFirst(){
         log.info("get First...");
         return CommonResult.success("ok");

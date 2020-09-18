@@ -12,6 +12,17 @@
     <artifactId>hanzo-gateway-server</artifactId>
 
     <dependencies>
+        <!-- common公共模块-->
+        <dependency>
+            <groupId>com.hanzo.cloud</groupId>
+            <artifactId>hanzo-cloud-common</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!--spring-cloud-gateway-网关-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

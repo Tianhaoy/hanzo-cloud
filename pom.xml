@@ -109,6 +109,12 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
         </dependency>
+        <!--mybatis plus拓展包-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
+            <version>3.4.0</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
