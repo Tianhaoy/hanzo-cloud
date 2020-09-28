@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 @Configuration
 @EnableAsync
-public class AsyncExecutorConfig {
+public class HanZoAsyncExecutorConfig {
 
     /**
      配置核心线程数

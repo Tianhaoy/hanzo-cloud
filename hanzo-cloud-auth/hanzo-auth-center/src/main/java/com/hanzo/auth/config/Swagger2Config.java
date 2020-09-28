@@ -1,4 +1,4 @@
-package com.hanzo.demo.config;
+package com.hanzo.auth.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import com.hanzo.common.config.HanZoSwagger2Config;

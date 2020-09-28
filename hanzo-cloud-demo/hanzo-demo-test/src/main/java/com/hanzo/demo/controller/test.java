@@ -1,5 +1,8 @@
 package com.hanzo.demo.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.hanzo.common.api.CommonPage;
 import com.hanzo.common.api.CommonResult;
 import com.hanzo.demo.entity.sysClient;
 import com.hanzo.demo.mapper.SysClientMapper;
@@ -37,7 +40,10 @@ public class test {
     @PostMapping(value = "/getMysql")
     public CommonResult getMysql(){
         log.info("get getMysql...");
-        List<sysClient> list = sysClientMapper.selectList(null);
-        return CommonResult.success(list);
+        PageHelper.startPage(0,5);
+        QueryWrapper<sysClient> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("c_id","7");
+        List<sysClient> list = sysClientMapper.selectList(queryWrapper);
+        return CommonResult.success(CommonPage.restPage(list));
     }
 }

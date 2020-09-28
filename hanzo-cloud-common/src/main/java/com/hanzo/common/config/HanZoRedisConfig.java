@@ -24,7 +24,7 @@ import java.time.Duration;
  * @Date 2020/9/16 11:05
  * @Description:Redis基础配置
  */
-public class BaseRedisConfig {
+public class HanZoRedisConfig {
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {

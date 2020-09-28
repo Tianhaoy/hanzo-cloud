@@ -15,7 +15,7 @@ import springfox.documentation.spring.web.plugins.Docket;
  * @Date 2020/9/18 0:34
  * @Description:Swagger2增强版knife4j公共配置类
  */
-public class BaseSwagger2Config {
+public class HanZoSwagger2Config {
 
     @Autowired
     private SwaggerParamConfig swaggerParamConfig;

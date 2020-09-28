@@ -1,4 +1,4 @@
-package com.hanzo.demo.config;
+package com.hanzo.auth.config;
 
 import com.hanzo.common.config.HanZoRedisConfig;
 import org.springframework.context.annotation.Configuration;
