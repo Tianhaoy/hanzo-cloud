@@ -1,7 +1,7 @@
 package com.hanzo.auth.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
-import com.hanzo.common.config.HanZoSwagger2Config;
+import com.hanzo.common.config.swagger.HanZoSwagger2Config;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 

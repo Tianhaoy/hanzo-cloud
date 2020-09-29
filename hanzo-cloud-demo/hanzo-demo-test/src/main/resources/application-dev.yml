@@ -65,3 +65,12 @@ swagger2:
     contactName: thy
     contactUrl: http://blog.babehome.com
     contactEmail: 246965218@qq.com
+
+#异步线程池配置
+hanZoAsync:
+  beanName: hanZoExecutor
+  threadNamePrefix: hanZoExecutor-
+  corePoolSize: 8
+  maxPoolSize: 16
+  keepAliveSeconds: 60
+  queueCapacity : 200

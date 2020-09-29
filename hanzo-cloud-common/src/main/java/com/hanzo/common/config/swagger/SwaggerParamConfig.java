@@ -1,4 +1,4 @@
-package com.hanzo.common.config;
+package com.hanzo.common.config.swagger;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
