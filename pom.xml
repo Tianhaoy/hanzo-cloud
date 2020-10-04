@@ -30,6 +30,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <!--所有的子模版的引入版本号统一在这里管理 子模块所有的maven都不需要带版本号-->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -49,6 +50,7 @@
         <hutool.version>5.4.2</hutool.version>
         <hanzo-cloud-common.version>1.0-SNAPSHOT</hanzo-cloud-common.version>
         <httpclient.version>4.5.5</httpclient.version>
+        <freemarker.version>2.3.30</freemarker.version>
         <!--<mybatis-generator.version>1.3.7</mybatis-generator.version>-->
         <!--<mybatis.version>3.4.6</mybatis.version>-->
         <!--<spring-data-commons.version>2.3.0.RELEASE</spring-data-commons.version>-->
@@ -94,6 +96,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
+        <!--可能用到了 >_< -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
@@ -108,22 +111,6 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-        </dependency>
-        <!--mybatis plus拓展包-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-extension</artifactId>
-            <version>3.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>3.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>2.3.30</version>
         </dependency>
     </dependencies>
 
@@ -178,6 +165,24 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!--mybatis plus拓展包-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!--mybatis plus 代码生成-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!--代码生成可能需要用到-->
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
             </dependency>
             <!--MyBatis分页插件starter-->
             <dependency>
