@@ -55,6 +55,7 @@ mybatis-plus:
     map-underscore-to-camel-case: true
 
 #接口文档信息配置
+##使用接口文档的情况下 必须配置 需额外引入自定义公共swagger注解
 swagger2:
   knife4j:
     apiBasePackage: com.hanzo.demo.controller
@@ -67,9 +68,10 @@ swagger2:
     contactEmail: 246965218@qq.com
 
 #异步线程池配置
+##使用异步线程池的情况下 必须配置 需额外引入自定义公共async注解
 hanZoAsync:
-  beanName: hanZoExecutor
-  threadNamePrefix: hanZoExecutor-
+  beanName: demoExecutor
+  threadNamePrefix: demoExecutor-
   corePoolSize: 8
   maxPoolSize: 16
   keepAliveSeconds: 60

@@ -18,8 +18,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableHanzoCommonClient
-@EnableHanzoAsyncCommonClient
 @EnableHanzoRunnerCommonClient
+@EnableHanzoAsyncCommonClient
 @EnableAsync
 public class DemoApplication {
     public static void main(String[] args) {

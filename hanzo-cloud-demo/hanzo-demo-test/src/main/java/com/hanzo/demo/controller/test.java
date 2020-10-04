@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.hanzo.common.api.CommonPage;
 import com.hanzo.common.api.CommonResult;
-import com.hanzo.common.config.async.AsyncParamConfig;
 import com.hanzo.demo.entity.sysClient;
 import com.hanzo.demo.mapper.SysClientMapper;
 import io.swagger.annotations.Api;
@@ -31,14 +30,14 @@ public class test {
     private SysClientMapper sysClientMapper;
 
     @Autowired
-    private AsyncParamConfig asyncParamConfig;
+    private test2 test2;
+
 
     @ApiOperation(value = "getFirst",notes = "getFirst")
     @GetMapping(value = "/getFirst")
     public CommonResult getFirst(){
         log.info("get First...");
-        test2 test = new test2();
-        test.getAsync();
+        test2.getAsync();
         return CommonResult.success("ok");
     }
 
