@@ -1,7 +1,7 @@
 package com.hanzo.demo;
 
 import com.hanzo.common.EnableHanzoAsyncCommonClient;
-import com.hanzo.common.EnableHanzoCommonClient;
+import com.hanzo.common.EnableHanzoSwaggerCommonClient;
 import com.hanzo.common.EnableHanzoRunnerCommonClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,7 +17,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-@EnableHanzoCommonClient
+@EnableHanzoSwaggerCommonClient
 @EnableHanzoRunnerCommonClient
 @EnableHanzoAsyncCommonClient
 @EnableAsync
