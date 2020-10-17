@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanzo.system.mapper.SysUserMapper">
+
+    <select id="findUserDetailList" resultType="com.hanzo.system.entity.SysUser">
+        SELECT
+            u.user_id userId,
+            u.username,
+            u.email,
+            u.mobile,
+            u.status,
+            u.create_time,
+            u.sex sex,
+            u.dept_id,
+            u.last_login_time,
+            u.modify_time,
+            u.description,
+            u.avatar,
+            d.dept_name,
+            GROUP_CONCAT(r.role_id) roleId,
+            GROUP_CONCAT(r.role_name) roleName
+        FROM
+          sys_user u
+        LEFT JOIN sys_dept d ON (u.dept_id = d.dept_id)
+        LEFT JOIN sys_user_role ur ON (u.user_id = ur.user_id)
+        LEFT JOIN sys_role r ON (r.role_id = ur.role_id)
+        WHERE 1 = 1
+            <if test="sysUserQueryParam.username != null and sysUserQueryParam.username != ''">
+                AND u.username = #{sysUserQueryParam.username}
+            </if>
+            <if test="sysUserQueryParam.deptName != null and sysUserQueryParam.deptName != ''">
+                AND d.dept_name like CONCAT('%',#{sysUserQueryParam.deptName},'%')
+            </if>
+            <if test="sysUserQueryParam.createTimeFrom != null and sysUserQueryParam.createTimeFrom !=''">
+                AND u.create_time &gt; #{sysUserQueryParam.createTimeFrom}
+            </if>
+            <if test="sysUserQueryParam.createTimeTo!= null and sysUserQueryParam.createTimeTo !=''">
+                AND u.create_time &lt; #{sysUserQueryParam.createTimeTo}
+            </if>
+        group by u.username,
+                u.user_id,
+                u.email,
+                u.mobile,
+                u.status,
+                u.create_time,
+                u.sex,
+                u.dept_id,
+                u.last_login_time,
+                u.modify_time,
+                u.description,
+                u.avatar
+    </select>
+</mapper>
