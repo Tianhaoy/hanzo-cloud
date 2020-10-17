@@ -22,7 +22,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableHanzoSwaggerCommonClient
 //hanzo公共模块自定义注解 -> ！使用runner启动提醒需要添加该注解！ ->
 @EnableHanzoRunnerCommonClient
-//hanzo公共模块自定义注解 -> ！使用异步线程池需要添加该注解！ 需配置yml信息 ->
+//hanzo公共模块自定义注解 -> ！使用异步线程池需要添加该注解！-> 子模块yml需配置yml信息
 @EnableHanzoAsyncCommonClient
 @EnableAsync
 public class SystemApplication {

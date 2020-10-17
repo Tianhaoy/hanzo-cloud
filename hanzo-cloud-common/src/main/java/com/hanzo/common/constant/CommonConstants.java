@@ -6,4 +6,8 @@ package com.hanzo.common.constant;
  * @Description:公共常量类
  */
 public interface CommonConstants {
+
+    public static final String DEFAULT_PASSWORD = "123456";
+
+    public static final String SYS_USER_EXCEL_PATH = "F:\\java demo\\git demo\\hanzo\\data\\excel\\user\\";
 }

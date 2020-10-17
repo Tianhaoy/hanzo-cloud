@@ -50,9 +50,13 @@ Spring:
 mybatis-plus:
   type-aliases-package: com.hanzo.demo.entity
   mapper-locations: lasspath:mapper/*.xml
-  #  开启数据库驼峰转换
+  #开启数据库驼峰转换
   configuration:
     map-underscore-to-camel-case: true
+    jdbc-type-for-null: null #指定为null，否则再插入空值时会报"无效的列类型"错误
+  #关闭MyBatis Plus Banner打印
+  global-config:
+    banner: false
 
 #接口文档信息配置
 ##使用接口文档的情况下 必须配置 需额外引入自定义公共swagger注解

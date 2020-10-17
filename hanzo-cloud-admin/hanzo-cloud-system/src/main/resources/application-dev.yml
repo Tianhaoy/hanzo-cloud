@@ -1,12 +1,12 @@
 server:
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT+8
-    default-property-inclusion: non_null
+  port: 6401
+
+spring:
   #Mysql数据库
-Spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/hanzo_cloud?useUnicode=true&characterEncoding=UTF8&serverTimezone=UTC
+    dbName: hanzo_cloud
+    driverParams: serverTimezone=Asia/Shanghai&characterEncoding=UTF-8&useSSL=false&verifyServerCertificate=false&autoReconnect=true&autoReconnectForPools=true&allowMultiQueries=true
+    url: jdbc:mysql://127.0.0.1:3306/${spring.datasource.dbName}?${spring.datasource.driverParams}
     username: root
     password: Thy0528!
     # 使用druid数据源
@@ -41,6 +41,15 @@ Spring:
         max-wait: -1
         max-idle: 8
         min-idle: 0
+  #jackson转化
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    visibility:
+      GETTER: NONE
+      SETTER: NONE
+      FIELD: ANY # JSON序列化的key以属性名显示为主
+    default-property-inclusion: non_null
 
 # mybatis 配置
   #mybatis:
@@ -49,10 +58,14 @@ Spring:
 #mybatis-plus配置
 mybatis-plus:
   type-aliases-package: com.hanzo.system.entity
-  mapper-locations: lasspath:mapper/*.xml
+  mapper-locations: classpath*:/mapper/*.xml
   #  开启数据库驼峰转换
   configuration:
     map-underscore-to-camel-case: true
+    jdbc-type-for-null: null #指定为null，否则再插入空值时会报"无效的列类型"错误
+  #关闭MyBatis Plus Banner打印
+  global-config:
+    banner: false
 
 #接口文档信息配置
 ##使用接口文档的情况下 必须配置 需额外引入自定义公共swagger注解

@@ -58,6 +58,13 @@ spring:
                   maxBackoff: 50ms
                   factor: 2
                   basedOnPreviousValue: false
+        - id: hanzo-cloud-system
+          uri: lb://hanzo-cloud-system #匹配后路由地址 lb代表从注册中心获取服务
+          order: 7001
+          predicates: # 路由条件 断言，路径相匹配的进行路由
+            - Path=/api/system/**
+          filters:
+            - StripPrefix=2
 
 secure:
   ignore:

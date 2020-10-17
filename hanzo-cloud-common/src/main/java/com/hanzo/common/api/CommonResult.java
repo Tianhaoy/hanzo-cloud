@@ -1,13 +1,20 @@
 package com.hanzo.common.api;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * @Author thy
  * @Date 2020/9/16 11:05
  * @Description:通用公共返回对象
  */
+@ApiModel(description = "响应对象")
 public class CommonResult<T> {
+    @ApiModelProperty(value = "响应码", name = "resultCode", required = true,example="200")
     private long code;
+    @ApiModelProperty(value = "响应消息", name = "message", required = true,example="SUCCESS")
     private String message;
+    @ApiModelProperty(value = "响应数据", name = "data")
     private T data;
 
     protected CommonResult() {
@@ -17,6 +24,19 @@ public class CommonResult<T> {
         this.code = code;
         this.message = message;
         this.data = data;
+    }
+
+    public CommonResult(long code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    /**
+     * 成功不返回结果 只返回Code message
+     *
+     */
+    public static <T> CommonResult<T> success() {
+        return new CommonResult<T>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage());
     }
 
     /**

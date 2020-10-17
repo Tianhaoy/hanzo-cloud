@@ -1,10 +1,9 @@
 server:
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT+8
-    default-property-inclusion: non_null
-  #Mysql数据库
+  port: 6301
+
+
 Spring:
+  #Mysql数据库
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/hanzo_cloud?useUnicode=true&characterEncoding=UTF8&serverTimezone=UTC
     username: root
@@ -41,6 +40,12 @@ Spring:
         max-wait: -1
         max-idle: 8
         min-idle: 0
+
+  #jackson转化
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
 
 # mybatis 配置
   #mybatis:

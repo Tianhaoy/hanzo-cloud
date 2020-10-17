@@ -4,6 +4,7 @@ import com.hanzo.common.api.CommonResult;
 import com.hanzo.common.constant.ExceptionConstant;
 import com.hanzo.common.exception.ApiException;
 import com.hanzo.common.exception.FileDownloadException;
+import com.hanzo.common.exception.HanZoTransactionalException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -31,17 +32,26 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(value = ApiException.class)
-    public CommonResult handle(ApiException e) {
+    public CommonResult handleApiException(ApiException e) {
         if (e.getErrorCode() != null) {
             return CommonResult.failed(e.getErrorCode());
         }
         return CommonResult.failed(e.getMessage());
     }
 
+    @ExceptionHandler(value = HanZoTransactionalException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult handleTransactionalException(HanZoTransactionalException e) {
+        log.error(e.getMessage());
+        e.printStackTrace();
+        return CommonResult.failed(ExceptionConstant.HAN_ZO_TRANSACTION_EXCEPTION);
+    }
+
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult handleException(Exception e) {
         log.error(e.getMessage());
+        e.printStackTrace();
         return CommonResult.failed(ExceptionConstant.HAN_ZO_EXCEPTION);
     }
 
@@ -71,6 +81,7 @@ public class GlobalExceptionHandler {
                 message = fieldError.getField()+fieldError.getDefaultMessage();
             }
         }
+        e.printStackTrace();
         return CommonResult.validateFailed(message);
     }
 
@@ -91,6 +102,7 @@ public class GlobalExceptionHandler {
     public CommonResult handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e) {
         String message = ExceptionConstant.METHOD_NOT_SUPPORTED + StringUtils.substringBetween(e.getMessage(), "'", "'") + ExceptionConstant.MEDIA_TYPE;
         log.error(message);
+        e.printStackTrace();
         return CommonResult.failed(message);
     }
 
@@ -99,6 +111,7 @@ public class GlobalExceptionHandler {
     public CommonResult handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         String message = ExceptionConstant.METHOD_NOT_SUPPORTED + StringUtils.substringBetween(e.getMessage(), "'", "'") + ExceptionConstant.REQUEST_METHOD;
         log.error(message);
+        e.printStackTrace();
         return CommonResult.failed(message);
     }
 }

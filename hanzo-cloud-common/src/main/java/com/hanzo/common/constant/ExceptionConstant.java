@@ -18,4 +18,6 @@ public interface ExceptionConstant {
     String FILE_DOWNLOAD_EXCEPTION = "文件下载异常";
 
     String HAN_ZO_EXCEPTION = "HanZo系统内部异常";
+
+    String HAN_ZO_TRANSACTION_EXCEPTION = "HanZo事务异常";
 }

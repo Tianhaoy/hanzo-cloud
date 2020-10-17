@@ -52,5 +52,12 @@ public class test {
         return CommonResult.success(CommonPage.restPage(list));
     }
 
-
+    public static void main(String[] args) {
+        for (int i=1;i<4;i++){
+            for (int j=i;j<i+10;j+=3){
+                System.out.print(j+" ");
+            };
+            System.out.println();
+        }
+    }
 }
