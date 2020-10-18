@@ -26,8 +26,8 @@ import java.nio.file.AccessDeniedException;
  * @Date 2020/9/16 11:10
  * @Description:全局异常处理
  */
-@ControllerAdvice
 @Slf4j
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ResponseBody
@@ -39,6 +39,7 @@ public class GlobalExceptionHandler {
         return CommonResult.failed(e.getMessage());
     }
 
+    @ResponseBody
     @ExceptionHandler(value = HanZoTransactionalException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult handleTransactionalException(HanZoTransactionalException e) {
@@ -47,6 +48,7 @@ public class GlobalExceptionHandler {
         return CommonResult.failed(ExceptionConstant.HAN_ZO_TRANSACTION_EXCEPTION);
     }
 
+    @ResponseBody
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult handleException(Exception e) {
@@ -85,6 +87,7 @@ public class GlobalExceptionHandler {
         return CommonResult.validateFailed(message);
     }
 
+    @ResponseBody
     @ExceptionHandler(value = FileDownloadException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public void handleFileDownloadException(FileDownloadException e) {
@@ -97,6 +100,7 @@ public class GlobalExceptionHandler {
         return CommonResult.failed(ExceptionConstant.FORBIDDEN);
     }
 
+    @ResponseBody
     @ExceptionHandler(value = HttpMediaTypeNotSupportedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e) {
@@ -106,6 +110,7 @@ public class GlobalExceptionHandler {
         return CommonResult.failed(message);
     }
 
+    @ResponseBody
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {

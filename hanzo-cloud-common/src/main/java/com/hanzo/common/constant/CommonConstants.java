@@ -10,4 +10,13 @@ public interface CommonConstants {
     public static final String DEFAULT_PASSWORD = "123456";
 
     public static final String SYS_USER_EXCEL_PATH = "F:\\java demo\\git demo\\hanzo\\data\\excel\\user\\";
+
+    /**
+     * 排序规则：降序
+     */
+    String ORDER_DESC = "descending";
+    /**
+     * 排序规则：升序
+     */
+    String ORDER_ASC = "ascending";
 }

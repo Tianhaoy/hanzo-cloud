@@ -4,7 +4,6 @@ package com.hanzo.system.controller;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.hanzo.common.api.CommonPage;
 import com.hanzo.common.api.CommonResult;
-import com.hanzo.common.model.QueryRequest;
 import com.hanzo.system.dto.SysUserQueryParam;
 import com.hanzo.system.dto.SysUserUpdateProfileParam;
 import com.hanzo.system.entity.SysUser;
@@ -29,7 +28,7 @@ import javax.validation.constraints.NotBlank;
 @Validated
 @RestController
 @Api(tags = "SysUserController", description = "用户管理")
-@RequestMapping("/user")
+@RequestMapping("user")
 public class SysUserController {
 
     @Autowired
