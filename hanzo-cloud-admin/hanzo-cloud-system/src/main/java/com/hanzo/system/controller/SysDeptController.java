@@ -3,18 +3,13 @@ package com.hanzo.system.controller;
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.hanzo.common.api.CommonResult;
-import com.hanzo.common.constant.StringConstants;
 import com.hanzo.system.dto.SysDeptQueryParam;
-import com.hanzo.system.dto.SysUserQueryParam;
 import com.hanzo.system.entity.SysDept;
-import com.hanzo.system.entity.SysUser;
 import com.hanzo.system.service.ISysDeptService;
-import com.sun.javafx.binding.StringConstant;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

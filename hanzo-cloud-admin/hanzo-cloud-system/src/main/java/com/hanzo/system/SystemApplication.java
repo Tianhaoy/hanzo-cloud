@@ -17,12 +17,18 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-//hanzo公共模块自定义注解 -> ！使用knife4j接口文档必须使用注解！ -> 需继承base类初始化bean放到公共模块完成
-//->子模块yml单独配置 ->通过网关统一管理接口文档
+/**
+ * hanzo公共模块自定义注解 -> ！使用knife4j接口文档必须使用注解！ -> 需继承base类初始化bean放到公共模块完成
+ * ->子模块yml单独配置 ->通过网关统一管理接口文档
+ */
 @EnableHanzoSwaggerCommonClient
-//hanzo公共模块自定义注解 -> ！使用runner启动提醒需要添加该注解！ ->
+/**
+ * hanzo公共模块自定义注解 -> ！使用runner启动提醒需要添加该注解！ ->
+ */
 @EnableHanzoRunnerCommonClient
-//hanzo公共模块自定义注解 -> ！使用异步线程池需要添加该注解！-> 子模块yml需配置yml信息
+/**
+ * hanzo公共模块自定义注解 -> ！使用异步线程池需要添加该注解！-> 子模块yml需配置yml信息
+ */
 @EnableHanzoAsyncCommonClient
 @EnableAsync
 public class SystemApplication {

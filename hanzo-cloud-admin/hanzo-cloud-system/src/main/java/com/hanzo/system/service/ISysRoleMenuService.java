@@ -2,6 +2,7 @@ package com.hanzo.system.service;
 
 import com.hanzo.system.entity.SysRoleMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -13,4 +14,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysRoleMenuService extends IService<SysRoleMenu> {
 
+    /**
+     *  删除角色菜单关联数据
+     * @param ids
+     */
+    @Transactional(rollbackFor = Exception.class)
+    void deleteRoleMenusByRoleId(String[] ids);
 }

@@ -1,8 +1,8 @@
 package com.hanzo.system.entity;
 
 import java.io.Serializable;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import lombok.*;
 
 /**
  * <p>
@@ -14,6 +14,9 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SysRoleMenu implements Serializable {
 
     private static final long serialVersionUID = 1L;

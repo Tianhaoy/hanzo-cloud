@@ -55,10 +55,10 @@ public class SysUserController {
         return CommonResult.success();
     }
 
-    @ApiOperation(value = "修改用户",produces = "application/json;charset=UTF-8")
+    @ApiOperation(value = "修改用户")
     @ApiOperationSupport(ignoreParameters = {"sysUser.createTime","sysUser.modifyTime","sysUser.lastLoginTime",
             "sysUser.isTab","sysUser.theme","sysUser.avatar","sysUser.deptName","sysUser.roleName","sysUser.password"})
-    @PutMapping("updateUser")
+    @PutMapping(value = "updateUser",produces = "application/json;charset=UTF-8")
     public CommonResult updateUser(@Valid @RequestBody SysUser sysUser) {
         sysUserService.updateUser(sysUser);
         return CommonResult.success();
