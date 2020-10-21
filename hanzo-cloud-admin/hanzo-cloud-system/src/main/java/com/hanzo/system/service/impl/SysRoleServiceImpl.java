@@ -8,10 +8,8 @@ import com.hanzo.common.constant.StringConstants;
 import com.hanzo.common.model.QueryRequest;
 import com.hanzo.common.util.SortUtil;
 import com.hanzo.system.dto.SysRoleQueryParam;
-import com.hanzo.system.entity.SysDept;
 import com.hanzo.system.entity.SysRole;
 import com.hanzo.system.entity.SysRoleMenu;
-import com.hanzo.system.entity.SysUser;
 import com.hanzo.system.mapper.SysRoleMapper;
 import com.hanzo.system.service.ISysRoleMenuService;
 import com.hanzo.system.service.ISysRoleService;
@@ -83,7 +81,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteUser(String roleIds) {
+    public void deleteRole(String roleIds) {
         String[] ids = StringUtils.split(roleIds,StringConstants.COMMA);
         List<String> list = Arrays.asList(ids);
         removeByIds(list);
@@ -112,7 +110,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             // 这里URLEncoder.encode可以防止中文乱码 当然和easyExcel没有关系
             String fileName = URLEncoder.encode(file, "UTF-8").replaceAll("\\+", "%20");
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
-            EasyExcel.write(response.getOutputStream(), SysRole.class).sheet("橘色数据信息").doWrite(sysRoleList);
+            EasyExcel.write(response.getOutputStream(), SysRole.class).sheet("角色数据信息").doWrite(sysRoleList);
         }catch (IOException e){
             e.printStackTrace();
         }

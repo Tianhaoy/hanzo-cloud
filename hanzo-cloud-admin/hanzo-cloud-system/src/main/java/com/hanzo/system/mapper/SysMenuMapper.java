@@ -2,6 +2,7 @@ package com.hanzo.system.mapper;
 
 import com.hanzo.system.entity.SysMenu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author thy
  * @since 2020-10-12
  */
+@Repository
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
 }

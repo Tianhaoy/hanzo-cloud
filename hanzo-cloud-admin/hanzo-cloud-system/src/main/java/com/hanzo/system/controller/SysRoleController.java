@@ -3,17 +3,13 @@ package com.hanzo.system.controller;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.hanzo.common.api.CommonPage;
 import com.hanzo.common.api.CommonResult;
-import com.hanzo.system.dto.SysDeptQueryParam;
 import com.hanzo.system.dto.SysRoleQueryParam;
-import com.hanzo.system.dto.SysUserQueryParam;
 import com.hanzo.system.entity.SysRole;
-import com.hanzo.system.entity.SysUser;
 import com.hanzo.system.service.ISysRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,11 +61,11 @@ public class SysRoleController {
     @ApiOperation("删除角色")
     @DeleteMapping(value = "deleteRoles/{roleIds}",produces = "application/json;charset=UTF-8")
     public CommonResult deleteRoles(@NotBlank(message = "请选择角色") @PathVariable String roleIds) {
-        sysRoleService.deleteUser(roleIds);
+        sysRoleService.deleteRole(roleIds);
         return CommonResult.success();
     }
 
-    @ApiOperation(value = "修改角色",produces = "application/json;charset=UTF-8")
+    @ApiOperation(value = "修改角色")
     @ApiOperationSupport(ignoreParameters = {"sysRole.createTime","sysRole.modifyTime"})
     @PutMapping(value = "updateRole",produces = "application/json;charset=UTF-8")
     public CommonResult updateRole(@Valid @RequestBody SysRole sysRole) {

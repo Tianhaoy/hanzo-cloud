@@ -46,7 +46,7 @@ public interface ISysRoleService extends IService<SysRole> {
      * 删除角色
      * @param roleIds
      */
-    void deleteUser(String roleIds);
+    void deleteRole(String roleIds);
 
     /**
      * 修改角色
