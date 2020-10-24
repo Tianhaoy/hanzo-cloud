@@ -52,6 +52,7 @@
         <httpclient.version>4.5.5</httpclient.version>
         <freemarker.version>2.3.30</freemarker.version>
         <easyExcel.version>2.2.6</easyExcel.version>
+        <easy.captcha.version>1.6.2</easy.captcha.version>
         <!--<mybatis-generator.version>1.3.7</mybatis-generator.version>-->
         <!--<mybatis.version>3.4.6</mybatis.version>-->
         <!--<spring-data-commons.version>2.3.0.RELEASE</spring-data-commons.version>-->
@@ -230,6 +231,12 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>easyexcel</artifactId>
                 <version>${easyExcel.version}</version>
+            </dependency>
+            <!--Java图形验证码-->
+            <dependency>
+                <groupId>com.github.whvcse</groupId>
+                <artifactId>easy-captcha</artifactId>
+                <version>${easy.captcha.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

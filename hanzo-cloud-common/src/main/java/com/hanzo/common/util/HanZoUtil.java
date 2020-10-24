@@ -7,8 +7,12 @@ import com.sun.javafx.binding.StringConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 /**
@@ -19,6 +23,10 @@ import java.util.stream.IntStream;
 @Slf4j
 public class HanZoUtil {
 
+    /**
+     * 服务启动信息打印公共方法
+     * @param environment
+     */
     public static void printSystemUpBanner(Environment environment) {
         String banner = "-----------------------------------------\n" +
                 "服务启动成功，时间：" + DateUtil.format(LocalDateTime.now(), DateConstants.FULL_TIME_SPLIT_PATTERN) + "\n" +
@@ -66,5 +74,13 @@ public class HanZoUtil {
             result.append((String.valueOf(s.charAt(0))).toUpperCase()).append(s.substring(1));
         }
         return result.toString();
+    }
+
+    /**
+     * 获取HttpServletRequest
+     * @return
+     */
+    public static HttpServletRequest getHttpServletRequest() {
+        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
     }
 }

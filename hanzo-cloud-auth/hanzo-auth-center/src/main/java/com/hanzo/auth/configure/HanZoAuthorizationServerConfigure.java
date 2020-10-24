@@ -1,5 +1,8 @@
 package com.hanzo.auth.configure;
 
+import com.hanzo.auth.config.param.JwtParamConfig;
+import com.hanzo.auth.service.impl.RedisAuthenticationCodeService;
+import com.hanzo.auth.service.impl.RedisClientDetailsService;
 import com.hanzo.auth.translator.HanZoWebResponseExceptionTranslator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +17,15 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
+import org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter;
+import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
+import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.DefaultUserAuthenticationConverter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 /**
@@ -28,49 +38,102 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 @RequiredArgsConstructor
 public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfigurerAdapter {
 
+    /**
+     * 认证管理器
+     */
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private RedisConnectionFactory redisConnectionFactory;
-    @Autowired
-    private UserDetailsService userDetailService;
+    private UserDetailsService userDetailsService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    private final HanZoWebResponseExceptionTranslator exceptionTranslator;
+    @Autowired
+    private HanZoWebResponseExceptionTranslator exceptionTranslator;
+    @Autowired
+    private RedisAuthenticationCodeService authenticationCodeService;
+    @Autowired
+    private RedisClientDetailsService redisClientDetailsService;
+    @Autowired
+    private RedisConnectionFactory redisConnectionFactory;
+    @Autowired
+    private JwtParamConfig jwtParamConfig;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-                .withClient("hanzo")
-                .secret(passwordEncoder.encode("123456"))
-                .authorizedGrantTypes("password", "refresh_token")
-                .scopes("all");
+        //通过redis读取
+        clients.withClientDetails(redisClientDetailsService);
+        //全表刷入
+        redisClientDetailsService.loadAllClientToCache();
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.tokenStore(tokenStore())
-                .userDetailsService(userDetailService)
+                .userDetailsService(userDetailsService)
+                .authorizationCodeServices(authenticationCodeService)
                 .authenticationManager(authenticationManager)
-                .tokenServices(defaultTokenServices())
                 .exceptionTranslator(exceptionTranslator);
+        if (jwtParamConfig.isStoreWithJwt()){
+            endpoints.accessTokenConverter(jwtAccessTokenConverter());
+        }
     }
 
+    /**
+     * 令牌存储
+     * 配置access_token.store-jwt为true使用jwt
+     * 否则使用redis
+     */
     @Bean
     public TokenStore tokenStore() {
-        return new RedisTokenStore(redisConnectionFactory);
+        if (jwtParamConfig.isStoreWithJwt()){
+            return new JwtTokenStore(jwtAccessTokenConverter());
+        }
+        RedisTokenStore redisTokenStore = new RedisTokenStore(redisConnectionFactory);
+        // 解决每次生成的 token都一样的问题
+        //redisTokenStore.setAuthenticationKeyGenerator(oAuth2Authentication -> UUID.randomUUID().toString());
+        return redisTokenStore;
     }
 
-    @Primary
+    /**
+     * Jwt资源令牌转换器
+     * 配置参数access_token.store-jwt为true时调用
+     * @return
+     */
     @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        DefaultAccessTokenConverter defaultAccessTokenConverter = (DefaultAccessTokenConverter) jwtAccessTokenConverter
+                .getAccessTokenConverter();
+        DefaultUserAuthenticationConverter userAuthenticationConverter = new DefaultUserAuthenticationConverter();
+        userAuthenticationConverter.setUserDetailsService(userDetailsService);
+        defaultAccessTokenConverter.setUserTokenConverter(userAuthenticationConverter);
+        //设置一个,多个会出现不可预料的问题 access_token将解析错误
+        jwtAccessTokenConverter.setSigningKey(jwtParamConfig.getSigningKey());
+        return jwtAccessTokenConverter;
+    }
+
+    @Bean
+    @Primary
     public DefaultTokenServices defaultTokenServices() {
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         tokenServices.setTokenStore(tokenStore());
-        tokenServices.setSupportRefreshToken(true);//设置为true表示开启刷新令牌的支持
-        tokenServices.setAccessTokenValiditySeconds(60 * 60 * 24);//有效时间
-        tokenServices.setRefreshTokenValiditySeconds(60 * 60 * 24 * 7);//刷新时间
+        tokenServices.setSupportRefreshToken(true);
+        tokenServices.setClientDetailsService(redisClientDetailsService);
         return tokenServices;
+    }
+
+    @Bean
+    public ResourceOwnerPasswordTokenGranter resourceOwnerPasswordTokenGranter(AuthenticationManager authenticationManager, OAuth2RequestFactory oAuth2RequestFactory) {
+        DefaultTokenServices defaultTokenServices = defaultTokenServices();
+        if (jwtParamConfig.isStoreWithJwt()) {
+            defaultTokenServices.setTokenEnhancer(jwtAccessTokenConverter());
+        }
+        return new ResourceOwnerPasswordTokenGranter(authenticationManager, defaultTokenServices, redisClientDetailsService, oAuth2RequestFactory);
+    }
+
+    @Bean
+    public DefaultOAuth2RequestFactory oAuth2RequestFactory() {
+        return new DefaultOAuth2RequestFactory(redisClientDetailsService);
     }
 }
 

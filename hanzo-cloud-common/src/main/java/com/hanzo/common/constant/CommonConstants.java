@@ -8,9 +8,43 @@ package com.hanzo.common.constant;
 public interface CommonConstants {
 
     /**
+     * 用户状态：有效
+     */
+    String STATUS_VALID = "1";
+    /**
+     * 用户状态：锁定
+     */
+    String STATUS_LOCK = "0";
+
+    /**
+     * 默认头像
+     */
+    String DEFAULT_AVATAR = "default.jpg";
+
+    /**
+     * 性别男
+     */
+    String SEX_MALE = "0";
+
+    /**
+     * 性别女
+     */
+    String SEX_FEMALE = "1";
+
+    /**
+     * 性别保密
+     */
+    String SEX_UNKNOW = "2";
+
+    /**
      * 默认密码
      */
     String DEFAULT_PASSWORD = "123456";
+
+    /**
+     * 注册用户角色ID
+     */
+    Integer REGISTER_ROLE_ID = 2;
 
     /**
      * 测试导出文档路径

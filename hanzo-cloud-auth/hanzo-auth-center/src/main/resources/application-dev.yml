@@ -70,3 +70,8 @@ swagger2:
     contactName: thy
     contactUrl: http://blog.babehome.com
     contactEmail: 246965218@qq.com
+
+#是否开启jwt
+access_token:
+  store-jwt: true
+  jwt-signing-key: hanzo>_<cloud
