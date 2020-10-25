@@ -53,7 +53,7 @@ public class SysRoleController {
     @ApiOperation("新增角色")
     @ApiOperationSupport(ignoreParameters = {"sysRole.roleId","sysRole.createTime","sysRole.modifyTime"})
     @PostMapping(value = "addRole",produces = "application/json;charset=UTF-8")
-    public CommonResult addRole(@Valid SysRole sysRole) {
+    public CommonResult addRole(@Valid @RequestBody SysRole sysRole) {
         sysRoleService.createRole(sysRole);
         return CommonResult.success();
     }

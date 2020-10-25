@@ -126,6 +126,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      */
     private void delete(List<String> menuIds) {
         removeByIds(menuIds);
+        //TODO 删除菜单后还需要删除这个role_menu角色菜单表
+        //删除角色菜单关联数据
+        //sysRoleMenuService.deleteRoleMenusByRoleId(ids);
         LambdaQueryWrapper<SysMenu> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(SysMenu::getParentId, menuIds);
         List<SysMenu> menus = sysMenuMapper.selectList(queryWrapper);

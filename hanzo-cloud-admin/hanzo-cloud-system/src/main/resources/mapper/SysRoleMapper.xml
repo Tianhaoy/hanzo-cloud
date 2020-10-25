@@ -6,13 +6,13 @@
         SELECT
         r.role_id,
         r.role_name,
-        r.remark,
+        r.remake,
         r.create_time,
         r.modify_time,
         GROUP_CONCAT( rm.menu_id ) menuIds
         FROM
-        t_role r
-        LEFT JOIN t_role_menu rm ON ( r.role_id = rm.role_id )
+        sys_role r
+        LEFT JOIN sys_role_menu rm ON ( r.role_id = rm.role_id )
         WHERE 1 = 1
         <if test="roleName != null and roleName != ''">
             AND r.role_name like CONCAT('%',#{roleName},'%')
