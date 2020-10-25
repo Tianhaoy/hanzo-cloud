@@ -90,7 +90,7 @@ public class RedisClientDetailsService extends JdbcClientDetailsService {
      * 删除redis缓存
      * @param clientId
      */
-    private void removeRedisCache(String clientId) {
+    public void removeRedisCache(String clientId) {
         redisService.hDel(AuthConstants.CACHE_CLIENT_KEY,clientId);
     }
 
