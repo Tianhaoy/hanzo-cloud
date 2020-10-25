@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -15,27 +16,51 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * @Author thy
  * @Date 2020/10/11 15:29
- * @Description:WebSecurity配置
+ * @Description:SpringSecurity配置
  */
-@Order(2)
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class HanZoSecurityConfigure extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsService userDetailService;
+    private UserDetailsService userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * 全局用户信息
+     * 法上的注解@Autowired的意思是，方法的参数的值是从spring容器中获取的
+     * 即参数AuthenticationManagerBuilder是spring中的一个Bean
+     * @param auth 认证管理
+     * @throws Exception 用户认证异常信息
+     */
+    @Autowired
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    /**
+     * 认证管理
+     * @return 认证管理对象
+     * @throws Exception 认证异常信息
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
+    /**
+     * http安全配置
+     * @param http http安全对象
+     * @throws Exception http安全异常信息
+     */
     @Override
+    //TODO 后期需要修改
     protected void configure(HttpSecurity http) throws Exception {
         http.requestMatchers()
                 .antMatchers("/oauth/**")
@@ -46,9 +71,6 @@ public class HanZoSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
-    }
+
 }
 
