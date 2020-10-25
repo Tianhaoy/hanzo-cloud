@@ -25,7 +25,7 @@ import javax.validation.constraints.NotBlank;
 @Slf4j
 @Validated
 @RestController
-@Api(tags = "SysDeptController", description = "部门管理")
+@Api(tags = "部门管理", description = "部门管理")
 @RequestMapping("dept")
 public class SysDeptController {
 

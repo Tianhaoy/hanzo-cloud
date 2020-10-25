@@ -25,7 +25,7 @@ import javax.validation.constraints.NotBlank;
 @Slf4j
 @Validated
 @RestController
-@Api(tags = "SysMenuController", description = "菜单管理")
+@Api(tags = "菜单管理", description = "菜单管理")
 @RequestMapping("menu")
 public class SysMenuController {
 
@@ -41,7 +41,7 @@ public class SysMenuController {
     @ApiOperation("新增菜单")
     @ApiOperationSupport(ignoreParameters = {"sysMenu.menuId","sysMenu.createTime","sysMenu.modifyTime"})
     @PostMapping(value = "addMenu",produces = "application/json;charset=UTF-8")
-    public CommonResult addMenu(@Valid SysMenu sysMenu) {
+    public CommonResult addMenu(@Valid @RequestBody SysMenu sysMenu) {
         sysMenuService.createRole(sysMenu);
         return CommonResult.success();
     }

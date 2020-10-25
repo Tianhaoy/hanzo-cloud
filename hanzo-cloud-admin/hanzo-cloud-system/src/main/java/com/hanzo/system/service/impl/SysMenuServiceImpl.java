@@ -11,6 +11,7 @@ import com.hanzo.system.entity.SysMenu;
 import com.hanzo.system.mapper.SysMenuMapper;
 import com.hanzo.system.service.ISysMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hanzo.system.util.CopyUtil;
 import com.hanzo.system.util.TreeUtil;
 import com.hanzo.system.vo.SysMenuResultVo;
 import org.apache.commons.lang3.StringUtils;
@@ -43,8 +44,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     public SysMenuResultVo getMenuList(SysMenuQueryParam sysMenuQueryParam) {
         List<SysMenu> sysMenuList = getAllMenuList(sysMenuQueryParam);
-        List<SysMenuResultParam> sysMenuResultParam = new ArrayList<>();
-        BeanUtils.copyProperties(sysMenuList,sysMenuResultParam);
+        List<SysMenuResultParam> sysMenuResultParam = CopyUtil.copy(sysMenuList,SysMenuResultParam.class);
         //递归实现树形结构
         List data = new TreeUtil().menuData(sysMenuResultParam);
         return SysMenuResultVo.builder()

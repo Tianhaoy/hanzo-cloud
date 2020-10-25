@@ -25,7 +25,7 @@ import javax.validation.constraints.NotBlank;
 @Slf4j
 @Validated
 @RestController
-@Api(tags = "SysRoleController", description = "角色管理")
+@Api(tags = "角色管理", description = "角色管理")
 @RequestMapping("role")
 public class SysRoleController {
 

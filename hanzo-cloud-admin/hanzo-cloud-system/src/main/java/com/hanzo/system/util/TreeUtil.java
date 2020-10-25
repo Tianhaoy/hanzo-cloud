@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class TreeUtil {
 
-    private final static String TOP_NODE_ID = "0";
+    private final static Integer TOP_NODE_ID = 0;
 
     /**
      * 所有的节点列表  部门
@@ -23,7 +23,7 @@ public class TreeUtil {
     public List data(List<SysDeptResultParam> nodes) {
         ArrayList<SysDeptResultParam> rootNode = new ArrayList<>();
         nodes.forEach(x -> {
-            if(x.getParentId().equals(TOP_NODE_ID)){
+            if(x.getParentId() == TOP_NODE_ID){
                 x.setHasParent(true);
                 rootNode.add(x);
             }
@@ -47,7 +47,7 @@ public class TreeUtil {
         //存放子节点的集合
         ArrayList<SysDeptResultParam> listChild = new ArrayList<>();
         allNode.forEach(x -> {
-            if (x.getParentId().equals(deptId)) {
+            if (x.getParentId() == deptId) {
                 x.setHasParent(true);
                 listChild.add(x);
             }
@@ -72,7 +72,7 @@ public class TreeUtil {
     public List menuData(List<SysMenuResultParam> nodes) {
         ArrayList<SysMenuResultParam> rootNode = new ArrayList<>();
         nodes.forEach(x -> {
-            if(x.getParentId().equals(TOP_NODE_ID)){
+            if(x.getParentId() == TOP_NODE_ID){
                 x.setHasParent(true);
                 rootNode.add(x);
             }
@@ -96,7 +96,7 @@ public class TreeUtil {
         //存放子节点的集合
         ArrayList<SysMenuResultParam> listChild = new ArrayList<>();
         allNode.forEach(x -> {
-            if (x.getParentId().equals(menuId)) {
+            if (x.getParentId() == menuId) {
                 x.setHasParent(true);
                 listChild.add(x);
             }

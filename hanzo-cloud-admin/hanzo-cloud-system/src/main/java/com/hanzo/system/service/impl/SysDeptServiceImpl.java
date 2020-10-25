@@ -1,7 +1,9 @@
 package com.hanzo.system.service.impl;
 
 import com.alibaba.excel.EasyExcel;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.hanzo.common.constant.CommonConstants;
 import com.hanzo.common.constant.StringConstants;
 import com.hanzo.common.model.QueryRequest;
@@ -12,6 +14,7 @@ import com.hanzo.system.entity.SysDept;
 import com.hanzo.system.mapper.SysDeptMapper;
 import com.hanzo.system.service.ISysDeptService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hanzo.system.util.CopyUtil;
 import com.hanzo.system.util.TreeUtil;
 import com.hanzo.system.vo.SysDeptResultVo;
 import org.apache.commons.lang3.StringUtils;
@@ -43,8 +46,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     @Override
     public SysDeptResultVo getDeptList(SysDeptQueryParam sysDeptQueryParam){
         List<SysDept> sysDeptList = getAllDeptList(sysDeptQueryParam);
-        List<SysDeptResultParam > sysDeptResultParam = new ArrayList<>();
-        BeanUtils.copyProperties(sysDeptList,sysDeptResultParam);
+        List<SysDeptResultParam > sysDeptResultParam = CopyUtil.copy(sysDeptList,SysDeptResultParam.class);
         //递归实现树形结构
         List data = new TreeUtil().data(sysDeptResultParam);
         return SysDeptResultVo.builder()
@@ -62,7 +64,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     public void deleteDept(String deptIds) {
         String[] ids = deptIds.split(StringConstants.COMMA);
         List<String> list = Arrays.asList(ids);
-        removeByIds(list);
+        this.delete(list);
     }
 
     @Override
@@ -102,5 +104,22 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         BeanUtils.copyProperties(sysDeptQueryParam, queryRequest);
         SortUtil.handleWrapperSort(queryRequest, queryWrapper, "orderNum", CommonConstants.ORDER_ASC, true);
         return sysDeptMapper.selectList(queryWrapper);
+    }
+
+    /**
+     * 递归删除部门信息
+     * @param deptIds
+     */
+    private void delete(List<String> deptIds) {
+        removeByIds(deptIds);
+
+        LambdaQueryWrapper<SysDept> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(SysDept::getParentId, deptIds);
+        List<SysDept> deptList = baseMapper.selectList(queryWrapper);
+        if (CollectionUtils.isNotEmpty(deptList)) {
+            List<String> deptIdList = new ArrayList<>();
+            deptList.forEach(d -> deptIdList.add(String.valueOf(d.getDeptId())));
+            this.delete(deptIdList);
+        }
     }
 }
