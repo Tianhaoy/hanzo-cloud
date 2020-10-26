@@ -11,6 +11,7 @@ import com.hanzo.system.entity.SysMenu;
 import com.hanzo.system.mapper.SysMenuMapper;
 import com.hanzo.system.service.ISysMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hanzo.system.service.ISysRoleMenuService;
 import com.hanzo.system.util.CopyUtil;
 import com.hanzo.system.util.TreeUtil;
 import com.hanzo.system.vo.SysMenuResultVo;
@@ -40,6 +41,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Autowired
     private SysMenuMapper sysMenuMapper;
+    @Autowired
+    private ISysRoleMenuService sysRoleMenuService;
 
     @Override
     public SysMenuResultVo getMenuList(SysMenuQueryParam sysMenuQueryParam) {
@@ -126,9 +129,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      */
     private void delete(List<String> menuIds) {
         removeByIds(menuIds);
-        //TODO 删除菜单后还需要删除这个role_menu角色菜单表
         //删除角色菜单关联数据
-        //sysRoleMenuService.deleteRoleMenusByRoleId(ids);
+        sysRoleMenuService.deleteRoleMenusByMenuId(menuIds);
         LambdaQueryWrapper<SysMenu> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(SysMenu::getParentId, menuIds);
         List<SysMenu> menus = sysMenuMapper.selectList(queryWrapper);
