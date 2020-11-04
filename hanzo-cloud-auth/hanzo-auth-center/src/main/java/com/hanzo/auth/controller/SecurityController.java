@@ -21,7 +21,7 @@ public class SecurityController {
     @Autowired
     private ConsumerTokenServices consumerTokenServices;
 
-    @GetMapping("oauth/test")
+    @GetMapping("test")
     public String testOauth() {
         return "oauth";
     }

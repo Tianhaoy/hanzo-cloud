@@ -28,7 +28,7 @@ import javax.validation.constraints.NotBlank;
 @Validated
 @RestController
 @Api(tags = "OauthClientDetailsController", description = "客户端管理")
-@RequestMapping("Client")
+@RequestMapping("client")
 public class OauthClientDetailsController {
 
     @Autowired
@@ -42,7 +42,7 @@ public class OauthClientDetailsController {
 
     @ApiOperation("新增客户端")
     @ApiOperationSupport(ignoreParameters = {"oauthClientDetails.resourceIds","oauthClientDetails.authorities","oauthClientDetails.additionalInformation","oauthClientDetails.originSecret"})
-    @PostMapping(value = "addClient",produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/addClient",produces = "application/json;charset=UTF-8")
     public CommonResult addClient(@Valid @RequestBody OauthClientDetails oauthClientDetails) throws HanZoException {
         oauthClientDetailsService.createClient(oauthClientDetails);
         return CommonResult.success();
@@ -50,27 +50,27 @@ public class OauthClientDetailsController {
 
     @ApiOperation("修改客户端")
     @ApiOperationSupport(ignoreParameters = {"oauthClientDetails.resourceIds","oauthClientDetails.authorities","oauthClientDetails.additionalInformation","oauthClientDetails.originSecret"})
-    @PostMapping(value = "updateClient",produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/updateClient",produces = "application/json;charset=UTF-8")
     public CommonResult updateClient(@Valid @RequestBody OauthClientDetails oauthClientDetails) throws HanZoException {
         oauthClientDetailsService.updateClient(oauthClientDetails);
         return CommonResult.success();
     }
 
     @ApiOperation("删除客户端")
-    @DeleteMapping(value = "deleteClient/{clientIds}")
+    @DeleteMapping(value = "/deleteClient/{clientIds}")
     public CommonResult deleteClient(@NotBlank(message = "请选择客户端") @PathVariable String clientIds) {
         oauthClientDetailsService.deleteClient(clientIds);
         return CommonResult.success();
     }
 
     @ApiOperation("检查客户端")
-    @GetMapping("check/{clientId}")
+    @GetMapping("/check/{clientId}")
     public CommonResult checkUserName(@NotBlank(message = "请选择客户端ID") @PathVariable String clientId) {
         return CommonResult.success(oauthClientDetailsService.findById(clientId) != null);
     }
 
     @ApiOperation("查看客户端秘钥")
-    @GetMapping("secret/{clientId}")
+    @GetMapping("/secret/{clientId}")
     public CommonResult getOriginClientSecret(@NotBlank(message = "请选择客户端ID") @PathVariable String clientId) {
         return CommonResult.success(oauthClientDetailsService.getOriginClientSecret(clientId));
     }

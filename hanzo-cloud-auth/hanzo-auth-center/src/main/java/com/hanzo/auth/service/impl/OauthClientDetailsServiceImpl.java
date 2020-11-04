@@ -1,10 +1,12 @@
 package com.hanzo.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.injector.methods.SelectById;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.hanzo.auth.dto.OauthClientQueryParam;
 import com.hanzo.auth.entity.OauthClientDetails;
+import com.hanzo.auth.entity.SysUser;
 import com.hanzo.auth.mapper.OauthClientDetailsMapper;
 import com.hanzo.auth.service.IOauthClientDetailsService;
 import com.hanzo.common.constant.StringConstants;
@@ -104,8 +106,10 @@ public class OauthClientDetailsServiceImpl extends ServiceImpl<OauthClientDetail
 
     @Override
     public OauthClientDetails findById(String clientId) {
-        return this.baseMapper.selectById(clientId);
-    }
+        LambdaQueryWrapper<OauthClientDetails> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(OauthClientDetails::getClientId, clientId);
+        return baseMapper.selectOne(queryWrapper);
+}
 
     @Override
     public String getOriginClientSecret(String clientId) {

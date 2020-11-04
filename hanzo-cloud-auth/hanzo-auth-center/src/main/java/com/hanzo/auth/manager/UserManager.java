@@ -8,9 +8,7 @@ import com.hanzo.auth.mapper.SysUserMapper;
 import com.hanzo.auth.mapper.SysUserRoleMapper;
 import com.hanzo.common.constant.CommonConstants;
 import com.hanzo.common.constant.StringConstants;
-import com.sun.javafx.binding.StringConstant;
-import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Param;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,8 +23,8 @@ import java.util.stream.Collectors;
  * @Date 2020/10/24 23:22
  * @Description:授权中心用户管理业务
  */
+@Slf4j
 @Service
-@RequiredArgsConstructor
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class UserManager {
 
@@ -43,6 +41,8 @@ public class UserManager {
      * @return
      */
     public SysUser findSysUserByName(String username) {
+        List<SysMenu> userPermissions = sysMenuMapper.findUserPermissions(username);
+        log.info(userPermissions.toString());
         SysUser sysUser = sysUserMapper.findSysUserByName(username);
         if (sysUser != null) {
            //TODO 后期会有其他拓展

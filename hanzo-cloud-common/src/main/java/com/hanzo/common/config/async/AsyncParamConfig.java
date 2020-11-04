@@ -1,6 +1,8 @@
 package com.hanzo.common.config.async;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
  * @Description:异步线程池自定义参数
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AsyncParamConfig {
 
     /**

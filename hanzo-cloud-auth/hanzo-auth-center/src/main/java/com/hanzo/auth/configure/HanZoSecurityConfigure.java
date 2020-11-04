@@ -1,7 +1,12 @@
 package com.hanzo.auth.configure;
 
+import com.hanzo.common.constant.EndpointConstants;
+import com.hanzo.common.constant.StringConstants;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,12 +17,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @Author thy
  * @Date 2020/10/11 15:29
  * @Description:SpringSecurity配置
  */
+@Configuration
+@Order(2)
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class HanZoSecurityConfigure extends WebSecurityConfigurerAdapter {
@@ -62,13 +70,25 @@ public class HanZoSecurityConfigure extends WebSecurityConfigurerAdapter {
     @Override
     //TODO 后期需要修改
     protected void configure(HttpSecurity http) throws Exception {
-        http.requestMatchers()
-                .antMatchers("/oauth/**")
+        String anonUrl = "/swaggerList,/oauth/token,/oauth/user/token,/users-anon/**,/smsVerify,/thirdPartyLogin/**";
+        String[] anonUrls = StringUtils.split(anonUrl, StringConstants.COMMA);
+        if (ArrayUtils.isEmpty(anonUrls)) {
+            anonUrls = new String[]{};
+        }
+            http.
+                requestMatchers()
+                .antMatchers(EndpointConstants.OAUTH_ALL, EndpointConstants.LOGIN)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/oauth/**").authenticated()
+                .antMatchers(anonUrls).permitAll()//白名单不拦截
+                .antMatchers(EndpointConstants.OAUTH_ALL).authenticated()
                 .and()
-                .csrf().disable();
+                .formLogin()
+                .loginPage(EndpointConstants.LOGIN)
+                .loginProcessingUrl(EndpointConstants.LOGIN)
+                .permitAll()
+                .and().csrf().disable()
+                .httpBasic().disable();
     }
 
 

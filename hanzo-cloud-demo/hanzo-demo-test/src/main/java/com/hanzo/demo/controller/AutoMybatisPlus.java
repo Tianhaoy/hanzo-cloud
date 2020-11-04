@@ -46,7 +46,7 @@ public class AutoMybatisPlus {
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
         //String projectPath = System.getProperty("user.dir");
-        String projectPath = "E:\\Iworkspace\\cloud\\hanzo-cloud\\hanzo-cloud-auth\\hanzo-auth-center";
+        String projectPath = "E:\\Iworkspace\\cloud\\hanzo-cloud\\hanzo-cloud-admin\\hanzo-cloud-system";
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("thy");
         gc.setOpen(false);
@@ -65,7 +65,7 @@ public class AutoMybatisPlus {
         // 包配置
         PackageConfig pc = new PackageConfig();
         //pc.setModuleName(scanner("模块名"));
-        pc.setParent("com.hanzo.auth");
+        pc.setParent("com.hanzo.system");
         mpg.setPackageInfo(pc);
 
         // 自定义配置

@@ -1,6 +1,7 @@
 package com.hanzo.auth.configure;
 
 import com.hanzo.auth.config.param.JwtParamConfig;
+import com.hanzo.auth.handler.AuthExceptionEntryPoint;
 import com.hanzo.auth.service.impl.RedisAuthenticationCodeService;
 import com.hanzo.auth.service.impl.RedisClientDetailsService;
 import com.hanzo.auth.translator.HanZoWebResponseExceptionTranslator;
@@ -17,6 +18,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter;
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
@@ -73,9 +75,15 @@ public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfig
                 .authorizationCodeServices(authenticationCodeService)
                 .authenticationManager(authenticationManager)
                 .exceptionTranslator(exceptionTranslator);
-        if (jwtParamConfig.isStoreWithJwt()){
+        if (jwtParamConfig.isEnableJwt()){
             endpoints.accessTokenConverter(jwtAccessTokenConverter());
         }
+    }
+
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        security.allowFormAuthenticationForClients(); // 允许表单形式的认证
+        security.authenticationEntryPoint(new AuthExceptionEntryPoint());
     }
 
     /**
@@ -85,7 +93,7 @@ public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfig
      */
     @Bean
     public TokenStore tokenStore() {
-        if (jwtParamConfig.isStoreWithJwt()){
+        if (jwtParamConfig.isEnableJwt()){
             return new JwtTokenStore(jwtAccessTokenConverter());
         }
         RedisTokenStore redisTokenStore = new RedisTokenStore(redisConnectionFactory);
@@ -108,7 +116,7 @@ public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfig
         userAuthenticationConverter.setUserDetailsService(userDetailsService);
         defaultAccessTokenConverter.setUserTokenConverter(userAuthenticationConverter);
         //设置一个,多个会出现不可预料的问题 access_token将解析错误
-        jwtAccessTokenConverter.setSigningKey(jwtParamConfig.getSigningKey());
+        jwtAccessTokenConverter.setSigningKey(jwtParamConfig.getJwtSigningKey());
         return jwtAccessTokenConverter;
     }
 
@@ -125,7 +133,7 @@ public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfig
     @Bean
     public ResourceOwnerPasswordTokenGranter resourceOwnerPasswordTokenGranter(AuthenticationManager authenticationManager, OAuth2RequestFactory oAuth2RequestFactory) {
         DefaultTokenServices defaultTokenServices = defaultTokenServices();
-        if (jwtParamConfig.isStoreWithJwt()) {
+        if (jwtParamConfig.isEnableJwt()) {
             defaultTokenServices.setTokenEnhancer(jwtAccessTokenConverter());
         }
         return new ResourceOwnerPasswordTokenGranter(authenticationManager, defaultTokenServices, redisClientDetailsService, oAuth2RequestFactory);
@@ -135,6 +143,7 @@ public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfig
     public DefaultOAuth2RequestFactory oAuth2RequestFactory() {
         return new DefaultOAuth2RequestFactory(redisClientDetailsService);
     }
+
 }
 
 

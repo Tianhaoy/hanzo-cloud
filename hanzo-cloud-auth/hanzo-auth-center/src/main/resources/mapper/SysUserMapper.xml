@@ -39,5 +39,4 @@
         u.description,
         u.avatar
     </select>
-    </select>
 </mapper>

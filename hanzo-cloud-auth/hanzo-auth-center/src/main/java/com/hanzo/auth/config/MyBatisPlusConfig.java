@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Configuration;
  * @Description:MyBatisPlus相关配置
  */
 @Configuration
-@MapperScan({"com.hanzo.auth.mapper"})
+@MapperScan("com.hanzo.auth.mapper")
 public class MyBatisPlusConfig {
 }
