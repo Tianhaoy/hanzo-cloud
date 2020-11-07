@@ -41,8 +41,6 @@ public class UserManager {
      * @return
      */
     public SysUser findSysUserByName(String username) {
-        List<SysMenu> userPermissions = sysMenuMapper.findUserPermissions(username);
-        log.info(userPermissions.toString());
         SysUser sysUser = sysUserMapper.findSysUserByName(username);
         if (sysUser != null) {
            //TODO 后期会有其他拓展

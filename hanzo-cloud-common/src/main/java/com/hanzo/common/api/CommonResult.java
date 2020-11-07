@@ -119,6 +119,13 @@ public class CommonResult<T> {
         return new CommonResult<T>(ResultCode.FORBIDDEN.getCode(), ResultCode.FORBIDDEN.getMessage(), data);
     }
 
+    /**
+     * 未通过网关返回结果
+     */
+    public static <T> CommonResult<T> gatewayForbidden(T data) {
+        return new CommonResult<T>(ResultCode.GATEWAY_FORBIDDEN.getCode(), ResultCode.GATEWAY_FORBIDDEN.getMessage(), data);
+    }
+
     public long getCode() {
         return code;
     }

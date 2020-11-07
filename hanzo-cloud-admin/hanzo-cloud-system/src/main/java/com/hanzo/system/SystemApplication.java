@@ -1,5 +1,6 @@
 package com.hanzo.system;
 
+import com.hanzo.client.EnableHanzoAuthClient;
 import com.hanzo.common.EnableHanzoAsyncCommonClient;
 import com.hanzo.common.EnableHanzoRunnerCommonClient;
 import com.hanzo.common.EnableHanzoSwaggerCommonClient;
@@ -17,6 +18,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
+@EnableAsync
 /**
  * hanzo公共模块自定义注解 -> ！使用knife4j接口文档必须使用注解！ -> 需继承base类初始化bean放到公共模块完成
  * ->子模块yml单独配置 ->通过网关统一管理接口文档
@@ -30,7 +32,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * hanzo公共模块自定义注解 -> ！使用异步线程池需要添加该注解！-> 子模块yml需配置yml信息
  */
 @EnableHanzoAsyncCommonClient
-@EnableAsync
+/**
+ * 授权客户端自定义注解 -> 使用授权必须添加该注解
+ */
+@EnableHanzoAuthClient
 public class SystemApplication {
     public static void main(String[] args) {
         SpringApplication.run(SystemApplication.class, args);

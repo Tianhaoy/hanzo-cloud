@@ -7,11 +7,16 @@ import com.sun.javafx.binding.StringConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
@@ -82,5 +87,29 @@ public class HanZoUtil {
      */
     public static HttpServletRequest getHttpServletRequest() {
         return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+    }
+
+    /**
+     * 获取当前令牌内容
+     *
+     * @return String 令牌内容
+     */
+    public static String getCurrentTokenValue() {
+        try {
+            OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) getOauth2Authentication().getDetails();
+            return details.getTokenValue();
+        } catch (Exception ignore) {
+            return null;
+        }
+    }
+
+    private static OAuth2Authentication getOauth2Authentication() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (OAuth2Authentication) authentication;
+    }
+
+    @SuppressWarnings("all")
+    private static LinkedHashMap<String, Object> getAuthenticationDetails() {
+        return (LinkedHashMap<String, Object>) getOauth2Authentication().getUserAuthentication().getDetails();
     }
 }

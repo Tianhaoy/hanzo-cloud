@@ -1,9 +1,12 @@
 package com.hanzo.auth.controller;
 
+import com.hanzo.auth.entity.SysUser;
+import com.hanzo.auth.mapper.SysUserMapper;
 import com.hanzo.common.api.CommonResult;
 import com.hanzo.common.exception.HanZoException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +24,8 @@ public class SecurityController {
     @Autowired
     private ConsumerTokenServices consumerTokenServices;
 
-    @GetMapping("test")
+    @GetMapping("user/addUser")
+    @PreAuthorize("hasAuthority('user:add')")
     public String testOauth() {
         return "oauth";
     }

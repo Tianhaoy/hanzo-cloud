@@ -89,3 +89,11 @@ hanZoAsync:
   maxPoolSize: 16
   keepAliveSeconds: 60
   queueCapacity : 200
+
+hanzo:
+  frontUrl: 'http://localhost:9527'
+  cloud:
+    security:
+      enable: true
+      only-fetch-by-gateway: false
+      anonUris: /actuator/**,/captcha,/social/**,/v2/api-docs,/v2/api-docs-ext,/login,/resource/**

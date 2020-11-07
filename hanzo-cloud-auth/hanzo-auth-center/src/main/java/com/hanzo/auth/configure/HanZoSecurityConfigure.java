@@ -75,12 +75,11 @@ public class HanZoSecurityConfigure extends WebSecurityConfigurerAdapter {
         if (ArrayUtils.isEmpty(anonUrls)) {
             anonUrls = new String[]{};
         }
-            http.
-                requestMatchers()
+        http.requestMatchers()
                 .antMatchers(EndpointConstants.OAUTH_ALL, EndpointConstants.LOGIN)
                 .and()
                 .authorizeRequests()
-                .antMatchers(anonUrls).permitAll()//白名单不拦截
+                //.antMatchers(anonUrls).permitAll()//白名单不拦截
                 .antMatchers(EndpointConstants.OAUTH_ALL).authenticated()
                 .and()
                 .formLogin()

@@ -8,6 +8,7 @@
         u.username,
         u.email,
         u.mobile,
+        u.password,
         u.status,
         u.create_time,
         u.sex sex,
