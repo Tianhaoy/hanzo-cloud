@@ -6,3 +6,17 @@ server:
 
 logging:
   file.name: ./logs/hanzo-gateway-server.log #添加开启admin的日志监控
+
+hystrix:
+  shareSecurityContext: true
+  threadpool:
+    default:
+      coreSize: 20 ##并发执行的最大线程数，默认10
+      maxQueueSize: 1000 ##BlockingQueue的最大队列数
+      queueSizeRejectionThreshold: 500 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000

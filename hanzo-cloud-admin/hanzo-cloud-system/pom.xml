@@ -19,11 +19,11 @@
             <version>${module.version}</version>
         </dependency>
         <!-- 授权客户端client模块-->
-        <dependency>
+        <!--<dependency>
             <groupId>com.hanzo.cloud</groupId>
             <artifactId>hanzo-auth-client</artifactId>
             <version>${module.version}</version>
-        </dependency>
+        </dependency>-->
         <!--web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

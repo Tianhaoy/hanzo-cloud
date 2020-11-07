@@ -47,6 +47,7 @@ ribbon:
   OkToRetryOnAllOperations: false
 
 hystrix:
+  shareSecurityContext: true
   threadpool:
     default:
       coreSize: 20 ##并发执行的最大线程数，默认10

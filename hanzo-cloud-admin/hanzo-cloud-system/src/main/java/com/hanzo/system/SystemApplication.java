@@ -1,6 +1,5 @@
 package com.hanzo.system;
 
-import com.hanzo.client.EnableHanzoAuthClient;
 import com.hanzo.common.EnableHanzoAsyncCommonClient;
 import com.hanzo.common.EnableHanzoRunnerCommonClient;
 import com.hanzo.common.EnableHanzoSwaggerCommonClient;
@@ -35,7 +34,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 /**
  * 授权客户端自定义注解 -> 使用授权必须添加该注解
  */
-@EnableHanzoAuthClient
 public class SystemApplication {
     public static void main(String[] args) {
         SpringApplication.run(SystemApplication.class, args);
