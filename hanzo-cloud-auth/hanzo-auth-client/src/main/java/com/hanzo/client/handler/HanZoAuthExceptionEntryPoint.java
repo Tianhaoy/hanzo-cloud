@@ -25,6 +25,6 @@ public class HanZoAuthExceptionEntryPoint implements AuthenticationEntryPoint {
         int status = HttpServletResponse.SC_UNAUTHORIZED;
         String message = "访问令牌不合法";
         log.error("客户端访问{}请求失败: {}", requestUri, message, authException);
-        HanZoUtil.makeJsonResponse(response, status, CommonResult.forbidden(message));
+        HanZoUtil.makeJsonResponse(response, status, CommonResult.unauthorized(message));
     }
 }

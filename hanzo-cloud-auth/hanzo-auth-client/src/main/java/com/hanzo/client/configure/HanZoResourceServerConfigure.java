@@ -45,16 +45,16 @@ public class HanZoResourceServerConfigure extends ResourceServerConfigurerAdapte
         }
 
         http.csrf().disable()
+                //异常的时候处理 返回SC_UNAUTHORIZED --> 401状态码未授权异常 有问题 竟然捕获不到很奇怪AccessDeniedException
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler)
+                .and()
                 .requestMatchers().antMatchers(SecurityParamConfig.getAuthUri())
                 .and()
                 .authorizeRequests()//在所有的路径中拦截来配置请求级别的安全细节
-                .antMatchers(anonUrls).permitAll()
+                .antMatchers(anonUrls).permitAll()//白名单 不加token也可以访问
                 .antMatchers(SecurityParamConfig.getAuthUri())
                 .authenticated()
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(exceptionEntryPoint)
-                .accessDeniedHandler(accessDeniedHandler)
                 .and()
                 .httpBasic();
     }

@@ -3,10 +3,15 @@ package com.hanzo.client.configuration;
 import com.hanzo.client.config.param.HanZoSecurityParamConfig;
 import com.hanzo.client.handler.HanZoAccessDeniedHandler;
 import com.hanzo.client.handler.HanZoAuthExceptionEntryPoint;
+import com.hanzo.client.util.AuthUtil;
+import com.hanzo.common.constant.AuthConstants;
+import feign.RequestInterceptor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
@@ -14,6 +19,7 @@ import org.springframework.security.oauth2.provider.token.DefaultUserAuthenticat
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.util.Base64Utils;
 
 /**
  * @Author thy
@@ -21,7 +27,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
  * @Description:自动加载参数bean配置
  */
 @Configuration
-@ComponentScan({"com.hanzo.client"})
+@ComponentScan({"com.hanzo.client.config.param"})
 public class AutoParamConfiguration {
 
     @Bean
@@ -70,15 +76,15 @@ public class AutoParamConfiguration {
         return new HanZoAuthExceptionEntryPoint();
     }
 
-//    @Bean
-//    public RequestInterceptor oauth2FeignRequestInterceptor() {
-//        return requestTemplate -> {
-//            String gatewayToken = new String(Base64Utils.encode(AuthConstants.GATEWAY_TOKEN_VALUE.getBytes()));
-//            requestTemplate.header(AuthConstants.GATEWAY_TOKEN_HEADER, gatewayToken);
-//            String authorizationToken = AuthUtil.getCurrentTokenValue();
-//            if (StringUtils.isNotBlank(authorizationToken)) {
-//                requestTemplate.header(HttpHeaders.AUTHORIZATION, AuthConstants.OAUTH2_TOKEN_TYPE + authorizationToken);
-//            }
-//        };
-//    }
+    @Bean
+    public RequestInterceptor oauth2FeignRequestInterceptor() {
+        return requestTemplate -> {
+            String gatewayToken = new String(Base64Utils.encode(AuthConstants.GATEWAY_TOKEN_VALUE.getBytes()));
+            requestTemplate.header(AuthConstants.GATEWAY_TOKEN_HEADER, gatewayToken);
+            String authorizationToken = AuthUtil.getCurrentTokenValue();
+            if (StringUtils.isNotBlank(authorizationToken)) {
+                requestTemplate.header(HttpHeaders.AUTHORIZATION, AuthConstants.OAUTH2_TOKEN_TYPE + authorizationToken);
+            }
+        };
+    }
 }

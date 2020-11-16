@@ -15,7 +15,7 @@ public class HanZoSecurityParamConfig {
     /**
      * 是否开启安全配置
      */
-    @Value("${hanzo.cloud.security.enable}")
+    @Value("${hanzo.cloud.security.enable:true}")
     private Boolean enable;
 
     /**
