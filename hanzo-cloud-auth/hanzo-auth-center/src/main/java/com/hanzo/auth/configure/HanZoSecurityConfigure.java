@@ -70,7 +70,7 @@ public class HanZoSecurityConfigure extends WebSecurityConfigurerAdapter {
     @Override
     //TODO 后期需要修改
     protected void configure(HttpSecurity http) throws Exception {
-        String anonUrl = "/swaggerList,/oauth/token,/oauth/user/token,/users-anon/**,/smsVerify,/thirdPartyLogin/**";
+        String anonUrl = "/swaggerList,/oauth/token,/oauth/check_token,/oauth/user/token,/users-anon/**,/smsVerify,/thirdPartyLogin/**";
         String[] anonUrls = StringUtils.split(anonUrl, StringConstants.COMMA);
         if (ArrayUtils.isEmpty(anonUrls)) {
             anonUrls = new String[]{};

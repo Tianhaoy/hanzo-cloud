@@ -4,16 +4,17 @@ import com.hanzo.client.config.param.HanZoSecurityParamConfig;
 import com.hanzo.client.handler.HanZoAccessDeniedHandler;
 import com.hanzo.client.handler.HanZoAuthExceptionEntryPoint;
 import com.hanzo.common.constant.StringConstants;
-import com.sun.javafx.binding.StringConstant;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+
 
 /**
  * @Author thy
@@ -21,15 +22,20 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
  * @Description:资源服务端配置
  */
 @EnableResourceServer
-@EnableAutoConfiguration(exclude = UserDetailsServiceAutoConfiguration.class)
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@ConditionalOnProperty(value = "hanzo.cloud.security.enable", havingValue = "true", matchIfMissing = true)
 public class HanZoResourceServerConfigure extends ResourceServerConfigurerAdapter {
 
     @Autowired
     private HanZoSecurityParamConfig SecurityParamConfig;
     @Autowired
+    private TokenStore tokenStore;
+    @Autowired
     private HanZoAccessDeniedHandler accessDeniedHandler;
     @Autowired
     private HanZoAuthExceptionEntryPoint exceptionEntryPoint;
+
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -42,8 +48,13 @@ public class HanZoResourceServerConfigure extends ResourceServerConfigurerAdapte
                 .requestMatchers().antMatchers(SecurityParamConfig.getAuthUri())
                 .and()
                 .authorizeRequests()//在所有的路径中拦截来配置请求级别的安全细节
-                .antMatchers(anonUrls).permitAll()//白名单不拦截
-                .antMatchers(SecurityParamConfig.getAuthUri()).authenticated()
+                .antMatchers(anonUrls).permitAll()
+                .antMatchers(SecurityParamConfig.getAuthUri())
+                .authenticated()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(exceptionEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
                 .and()
                 .httpBasic();
     }
@@ -51,6 +62,7 @@ public class HanZoResourceServerConfigure extends ResourceServerConfigurerAdapte
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
         resources.authenticationEntryPoint(exceptionEntryPoint)
-                .accessDeniedHandler(accessDeniedHandler);
+                .accessDeniedHandler(accessDeniedHandler)
+                .tokenStore(tokenStore);
     }
 }

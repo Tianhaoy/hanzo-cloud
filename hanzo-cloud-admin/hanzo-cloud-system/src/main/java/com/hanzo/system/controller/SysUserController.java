@@ -36,19 +36,21 @@ public class SysUserController {
     private ISysUserService sysUserService;
 
     @ApiOperation("获取用户信息")
-    @PreAuthorize("hasAuthority('user:add')")
+    @PreAuthorize("hasAuthority('user:list')")
     @PostMapping(value = "/getUserList",produces = "application/json;charset=UTF-8")
     public CommonResult getUserList(@RequestBody SysUserQueryParam sysUserQueryParam){
         return CommonResult.success(CommonPage.restPage(sysUserService.findUserDetailList(sysUserQueryParam)));
     }
 
     @ApiOperation("根据用户名检查")
+    @PreAuthorize("hasAuthority('user:check')")
     @GetMapping(value = "check/{username}",produces = "application/json;charset=UTF-8")
     public CommonResult checkUserName(@NotBlank(message = "请携带用户名") @PathVariable String username) {
         return CommonResult.success(sysUserService.findByName(username) != null);
     }
 
     @ApiOperation("新增用户")
+    @PreAuthorize("hasAuthority('user:add')")
     @ApiOperationSupport(ignoreParameters = {"sysUser.userId","sysUser.createTime","sysUser.modifyTime","sysUser.lastLoginTime",
             "sysUser.isTab","sysUser.theme","sysUser.avatar","sysUser.deptName","sysUser.roleName"})
     @PostMapping(value = "addUser",produces = "application/json;charset=UTF-8")
@@ -58,6 +60,7 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "修改用户")
+    @PreAuthorize("hasAuthority('user:update')")
     @ApiOperationSupport(ignoreParameters = {"sysUser.createTime","sysUser.modifyTime","sysUser.lastLoginTime",
             "sysUser.isTab","sysUser.theme","sysUser.avatar","sysUser.deptName","sysUser.roleName","sysUser.password"})
     @PutMapping(value = "updateUser",produces = "application/json;charset=UTF-8")
@@ -67,6 +70,7 @@ public class SysUserController {
     }
 
     @ApiOperation("删除用户")
+    @PreAuthorize("hasAuthority('user:delete')")
     @DeleteMapping(value = "deleteUsers/{userIds}",produces = "application/json;charset=UTF-8")
     public CommonResult deleteUsers(@NotBlank(message = "请选择用户") @PathVariable String userIds) {
         sysUserService.deleteUser(userIds);

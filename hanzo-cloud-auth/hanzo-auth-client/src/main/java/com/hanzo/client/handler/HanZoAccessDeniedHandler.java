@@ -1,6 +1,7 @@
 package com.hanzo.client.handler;
 
 import com.hanzo.common.api.CommonResult;
+import com.hanzo.common.util.HanZoUtil;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
@@ -17,6 +18,7 @@ public class HanZoAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-        CommonResult.forbidden("没有权限访问该资源");
+        System.out.println(45456466);
+        HanZoUtil.makeJsonResponse(response, HttpServletResponse.SC_FORBIDDEN, CommonResult.forbidden("没有权限访问该资源"));
     }
 }

@@ -2,7 +2,6 @@ package com.hanzo.client;
 
 import com.hanzo.client.configuration.AutoParamConfiguration;
 import com.hanzo.client.configure.HanZoResourceServerConfigure;
-import com.hanzo.client.configure.HanZoSecurityAutoConfigure;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -14,7 +13,8 @@ import java.lang.annotation.*;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({AutoParamConfiguration.class, HanZoSecurityAutoConfigure.class,HanZoResourceServerConfigure.class})
+@Import({AutoParamConfiguration.class, HanZoResourceServerConfigure.class})
 @Documented
+@Inherited
 public @interface EnableHanzoAuthClient {
 }

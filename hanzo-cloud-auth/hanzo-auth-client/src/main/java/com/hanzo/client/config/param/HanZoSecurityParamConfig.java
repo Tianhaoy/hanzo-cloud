@@ -36,4 +36,9 @@ public class HanZoSecurityParamConfig {
      */
     @Value("${hanzo.cloud.security.onlyFetchByGateway:true}")
     private Boolean onlyFetchByGateway;
+
+    /**
+     * jwt加密key 对称 暂时固定
+     */
+    private String jwtSigningKey = "hanzo>_<cloud";
 }

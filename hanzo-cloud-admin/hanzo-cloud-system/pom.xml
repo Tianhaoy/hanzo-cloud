@@ -19,10 +19,26 @@
             <version>${module.version}</version>
         </dependency>
         <!-- 授权客户端client模块-->
-        <!--<dependency>
+        <dependency>
             <groupId>com.hanzo.cloud</groupId>
             <artifactId>hanzo-auth-client</artifactId>
             <version>${module.version}</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+            <exclusions>
+                &lt;!&ndash;旧版本 redis操作有问题&ndash;&gt;
+                <exclusion>
+                    <artifactId>spring-security-oauth2</artifactId>
+                    <groupId>org.springframework.security.oauth</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>-->
+       <!-- <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>2.3.3.RELEASE</version>
         </dependency>-->
         <!--web-->
         <dependency>
@@ -90,6 +106,7 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
+        <!--easyExcel导出开源包-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>

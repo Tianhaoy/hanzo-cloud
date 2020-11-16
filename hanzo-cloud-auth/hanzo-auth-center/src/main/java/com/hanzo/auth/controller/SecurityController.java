@@ -1,16 +1,14 @@
 package com.hanzo.auth.controller;
 
-import com.hanzo.auth.entity.SysUser;
-import com.hanzo.auth.mapper.SysUserMapper;
 import com.hanzo.common.api.CommonResult;
 import com.hanzo.common.exception.HanZoException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
@@ -19,23 +17,26 @@ import java.security.Principal;
  * @Date 2020/10/11 16:29
  * @Description:
  */
-@RestController
+@Controller
 public class SecurityController {
     @Autowired
     private ConsumerTokenServices consumerTokenServices;
 
     @GetMapping("user/addUser")
-    @PreAuthorize("hasAuthority('user:add')")
+    @ResponseBody
     public String testOauth() {
         return "oauth";
     }
 
     @GetMapping("user")
+    @ResponseBody
     public Principal currentUser(Principal principal) {
+        System.out.println("来请求了参数为:"+principal);
         return principal;
     }
 
     @DeleteMapping("signout")
+    @ResponseBody
     public CommonResult signout(HttpServletRequest request) throws HanZoException {
         String authorization = request.getHeader("Authorization");
         String token = StringUtils.replace(authorization, "bearer ", "");

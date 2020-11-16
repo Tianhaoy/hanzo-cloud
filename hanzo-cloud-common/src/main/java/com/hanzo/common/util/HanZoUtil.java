@@ -1,22 +1,25 @@
 package com.hanzo.common.util;
 
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.hanzo.common.constant.DateConstants;
 import com.hanzo.common.constant.StringConstants;
-import com.sun.javafx.binding.StringConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import reactor.core.publisher.Mono;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
@@ -30,6 +33,7 @@ public class HanZoUtil {
 
     /**
      * 服务启动信息打印公共方法
+     *
      * @param environment
      */
     public static void printSystemUpBanner(Environment environment) {
@@ -83,33 +87,78 @@ public class HanZoUtil {
 
     /**
      * 获取HttpServletRequest
+     *
      * @return
      */
     public static HttpServletRequest getHttpServletRequest() {
         return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
     }
 
+
     /**
-     * 获取当前令牌内容
+     * 设置响应
      *
-     * @return String 令牌内容
+     * @param response    HttpServletResponse
+     * @param contentType content-type
+     * @param status      http状态码
+     * @param value       响应内容
+     * @throws IOException IOException
      */
-    public static String getCurrentTokenValue() {
-        try {
-            OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) getOauth2Authentication().getDetails();
-            return details.getTokenValue();
-        } catch (Exception ignore) {
-            return null;
-        }
+    public static void makeResponse(HttpServletResponse response, String contentType,
+                                    int status, Object value) throws IOException {
+        response.setContentType(contentType);
+        response.setStatus(status);
+        response.getOutputStream().write(JSONObject.toJSONString(value).getBytes());
     }
 
-    private static OAuth2Authentication getOauth2Authentication() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (OAuth2Authentication) authentication;
+    /**
+     * 设置成功响应
+     *
+     * @param response HttpServletResponse
+     * @param value    响应内容
+     * @throws IOException IOException
+     */
+    public static void makeSuccessResponse(HttpServletResponse response, Object value) throws IOException {
+        makeResponse(response, MediaType.APPLICATION_JSON_VALUE, HttpServletResponse.SC_OK, value);
     }
 
-    @SuppressWarnings("all")
-    private static LinkedHashMap<String, Object> getAuthenticationDetails() {
-        return (LinkedHashMap<String, Object>) getOauth2Authentication().getUserAuthentication().getDetails();
+    /**
+     * 设置失败响应
+     *
+     * @param response HttpServletResponse
+     * @param value    响应内容
+     * @throws IOException IOException
+     */
+    public static void makeFailureResponse(HttpServletResponse response, Object value) throws IOException {
+        makeResponse(response, MediaType.APPLICATION_JSON_VALUE, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, value);
+    }
+
+    /**
+     * 设置JSON类型响应
+     *
+     * @param response HttpServletResponse
+     * @param status   http状态码
+     * @param value    响应内容
+     * @throws IOException IOException
+     */
+    public static void makeJsonResponse(HttpServletResponse response, int status, Object value) throws IOException {
+        makeResponse(response, MediaType.APPLICATION_JSON_VALUE, status, value);
+    }
+
+    /**
+     * 设置webflux模型响应
+     *
+     * @param response    ServerHttpResponse
+     * @param contentType content-type
+     * @param status      http状态码
+     * @param value       响应内容
+     * @return Mono<Void>
+     */
+    public static Mono<Void> makeWebFluxResponse(ServerHttpResponse response, String contentType,
+                                                 HttpStatus status, Object value) {
+        response.setStatusCode(status);
+        response.getHeaders().add(HttpHeaders.CONTENT_TYPE, contentType);
+        DataBuffer dataBuffer = response.bufferFactory().wrap(JSONObject.toJSONString(value).getBytes());
+        return response.writeWith(Mono.just(dataBuffer));
     }
 }

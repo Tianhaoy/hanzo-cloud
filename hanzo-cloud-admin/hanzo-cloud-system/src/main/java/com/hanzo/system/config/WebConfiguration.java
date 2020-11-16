@@ -1,11 +1,16 @@
 package com.hanzo.system.config;
 
+import com.hanzo.client.handler.HanZoAccessDeniedHandler;
+import com.hanzo.client.handler.HanZoAuthExceptionEntryPoint;
+import com.hanzo.client.interceptor.HanZoServerProtectInterceptor;
 import com.hanzo.common.handler.GlobalExceptionHandler;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -25,5 +30,16 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public HanZoServerProtectInterceptor hanZoServerProtectInterceptor() {
+        return new HanZoServerProtectInterceptor();
+    }
+
+    @Override
+    @SuppressWarnings("all")
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(hanZoServerProtectInterceptor());
     }
 }
