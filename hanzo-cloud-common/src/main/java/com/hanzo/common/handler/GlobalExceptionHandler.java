@@ -5,6 +5,7 @@ import com.hanzo.common.constant.ExceptionConstant;
 import com.hanzo.common.exception.ApiException;
 import com.hanzo.common.exception.FileDownloadException;
 import com.hanzo.common.exception.HanZoTransactionalException;
+import com.hanzo.common.exception.TokenException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,7 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(value = ApiException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult handleApiException(ApiException e) {
         if (e.getErrorCode() != null) {
             return CommonResult.failed(e.getErrorCode());
@@ -49,6 +51,15 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseBody
+    @ExceptionHandler(value = TokenException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public CommonResult handleException(TokenException e) {
+        log.error(e.getMessage());
+        e.printStackTrace();
+        return CommonResult.unauthorized(e.getMessage());
+    }
+
+    @ResponseBody
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult handleException(Exception e) {
@@ -59,6 +70,7 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult handleValidException(MethodArgumentNotValidException e) {
         BindingResult bindingResult = e.getBindingResult();
         String message = null;
@@ -97,7 +109,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public CommonResult handleAccessDeniedException() {
-        return CommonResult.failed(ExceptionConstant.FORBIDDEN);
+        return CommonResult.forbidden(ExceptionConstant.FORBIDDEN);
     }
 
     @ResponseBody

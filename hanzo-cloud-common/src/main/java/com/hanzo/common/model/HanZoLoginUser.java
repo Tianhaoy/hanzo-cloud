@@ -1,32 +1,25 @@
-package com.hanzo.auth.entity;
+package com.hanzo.common.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+import lombok.*;
+
 import java.util.Date;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 /**
- * <p>
- * 用户表
- * </p>
- *
- * @author thy
- * @since 2020-10-24
+ * @Author thy
+ * @Date 2020/10/11 16:25
+ * @Description:
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-public class SysUser implements Serializable {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class HanZoLoginUser {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -1748289340320186418L;
 
     /**
      * 用户ID
      */
-    @TableId(value = "user_id", type = IdType.AUTO)
     private Integer userId;
 
     /**
@@ -102,25 +95,26 @@ public class SysUser implements Serializable {
     /**
      * 部门名称
      */
-    @TableField(exist = false)
     private String deptName;
 
     /**
      * 角色 ID
      */
-    @TableField(exist = false)
     private String roleId;
 
     /**
      * 角色名称
      */
-    @TableField(exist = false)
     private String roleName;
+
+    /**
+     * 部门ids
+     */
+    private String deptIds;
 
     /**
      * 登录类型
      */
-    @TableField(exist = false)
     private Integer type;
 
 }

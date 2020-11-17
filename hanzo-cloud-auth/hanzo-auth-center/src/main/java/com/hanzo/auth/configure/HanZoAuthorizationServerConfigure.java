@@ -1,6 +1,7 @@
 package com.hanzo.auth.configure;
 
 import com.hanzo.auth.config.param.JwtParamConfig;
+import com.hanzo.auth.entity.HanZoAuthUser;
 import com.hanzo.auth.handler.AuthExceptionEntryPoint;
 import com.hanzo.auth.service.impl.RedisAuthenticationCodeService;
 import com.hanzo.auth.service.impl.RedisClientDetailsService;
@@ -14,21 +15,25 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter;
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
-import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.DefaultUserAuthenticationConverter;
-import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.*;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author thy
@@ -70,10 +75,15 @@ public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfig
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+        // token增强链
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        // 把jwt增强，与额外信息增强加入到增强链
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), jwtAccessTokenConverter()));
         endpoints.tokenStore(tokenStore())
                 .userDetailsService(userDetailsService)
                 .authorizationCodeServices(authenticationCodeService)
                 .authenticationManager(authenticationManager)
+                .tokenEnhancer(tokenEnhancerChain)
                 .exceptionTranslator(exceptionTranslator);
         if (jwtParamConfig.isEnableJwt()){
             endpoints.accessTokenConverter(jwtAccessTokenConverter());
@@ -144,6 +154,36 @@ public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfig
         return new DefaultOAuth2RequestFactory(redisClientDetailsService);
     }
 
+    /**
+     * jwt token增强，添加额外信息
+     * @return
+     */
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return new TokenEnhancer() {
+            @Override
+            public OAuth2AccessToken enhance(OAuth2AccessToken oAuth2AccessToken, OAuth2Authentication oAuth2Authentication) {
+
+                // 添加额外信息的map
+                final Map<String, Object> additionMessage = new HashMap<>(2);
+                // 获取当前登录的用户
+                HanZoAuthUser user = (HanZoAuthUser) oAuth2Authentication.getUserAuthentication().getPrincipal();
+
+                // 如果用户不为空 则把id放入jwt token中
+                if (user != null) {
+                    additionMessage.put("userId", String.valueOf(user.getUserId()));
+                    additionMessage.put("userName", user.getUsername());
+                    additionMessage.put("mobile",user.getMobile());
+                    additionMessage.put("type",user.getType());
+                    additionMessage.put("roleId", String.valueOf(user.getRoleId()));
+                    additionMessage.put("deptName", user.getDeptName());
+                    additionMessage.put("avatar", user.getAvatar());
+                }
+                ((DefaultOAuth2AccessToken)oAuth2AccessToken).setAdditionalInformation(additionMessage);
+                return oAuth2AccessToken;
+            }
+        };
+    }
 }
 
 

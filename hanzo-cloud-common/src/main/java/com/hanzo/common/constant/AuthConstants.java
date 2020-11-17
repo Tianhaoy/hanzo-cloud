@@ -31,4 +31,24 @@ public interface AuthConstants {
      * OAUTH2 令牌类型 https://oauth.net/2/bearer-tokens/
      */
     String OAUTH2_TOKEN_TYPE = "bearer";
+
+    /**
+     * token 密钥
+     */
+    String SIGN_KEY = "hanzo>_<cloud";
+
+    /**
+     * 登录类型 用户密码
+     */
+    int LOGIN_USERNAME_TYPE = 1;
+
+    /**
+     * 登录类型 手机号
+     */
+    int LOGIN_MOBILE_TYPE = 2;
+
+    /**
+     * 登录类型 第三方登录
+     */
+    int LOGIN_SOCIAL_TYPE = 3;
 }

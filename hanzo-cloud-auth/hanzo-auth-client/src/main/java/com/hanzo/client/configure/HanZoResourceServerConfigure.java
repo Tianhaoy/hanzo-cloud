@@ -1,6 +1,7 @@
 package com.hanzo.client.configure;
 
 import com.hanzo.client.config.param.HanZoSecurityParamConfig;
+import com.hanzo.client.filter.AfterCsrfFilter;
 import com.hanzo.client.handler.HanZoAccessDeniedHandler;
 import com.hanzo.client.handler.HanZoAuthExceptionEntryPoint;
 import com.hanzo.common.constant.StringConstants;
@@ -14,6 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.web.csrf.CsrfFilter;
 
 
 /**
@@ -56,7 +58,10 @@ public class HanZoResourceServerConfigure extends ResourceServerConfigurerAdapte
                 .antMatchers(SecurityParamConfig.getAuthUri())
                 .authenticated()
                 .and()
+                //.addFilterAfter()
                 .httpBasic();
+        // 在 CsrfFilter 后添加 AfterCsrfFilter 解析token 放到上下文中
+        http.addFilterAfter(new AfterCsrfFilter(), CsrfFilter.class);
     }
 
     @Override

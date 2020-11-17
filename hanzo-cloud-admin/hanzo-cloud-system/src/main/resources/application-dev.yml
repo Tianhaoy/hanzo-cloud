@@ -51,7 +51,10 @@ spring:
       FIELD: ANY # JSON序列化的key以属性名显示为主
     default-property-inclusion: non_null
 
-# mybatis 配置
+#  main:
+#    allow-bean-definition-overriding: true
+
+  # mybatis 配置
   #mybatis:
   #mapper-locations: classpath:mapper/*.xml
 
@@ -91,9 +94,10 @@ hanZoAsync:
   queueCapacity : 200
 
 hanzo:
-  frontUrl: 'http://localhost:9527'
   cloud:
     security:
       enable: true
-      only-fetch-by-gateway: false
+      onlyFetchByGateway: true
       anonUris: /actuator/**,/captcha,/social/**,/v2/api-docs,/v2/api-docs-ext,/login,/resource/**
+
+

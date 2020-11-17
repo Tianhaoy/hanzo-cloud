@@ -119,6 +119,23 @@ public class HanZoAuthUser extends User {
      */
     private String deptIds;
 
+    /**
+     * 登录类型
+     */
+    private Integer type;
+
+    public HanZoAuthUser(Integer userId,Integer type,String mobile,String roleId,String deptName,String avatar,String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+        this.username = username;
+        this.password = password;
+        this.userId = userId;
+        this.type = type;
+        this.mobile = mobile;
+        this.roleId = roleId;
+        this.deptName = deptName;
+        this.avatar = avatar;
+    }
+
     public HanZoAuthUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }

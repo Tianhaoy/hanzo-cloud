@@ -3,6 +3,7 @@ package com.hanzo.auth.service.impl;
 import com.hanzo.auth.entity.HanZoAuthUser;
 import com.hanzo.auth.entity.SysUser;
 import com.hanzo.auth.manager.UserManager;
+import com.hanzo.common.constant.AuthConstants;
 import com.hanzo.common.constant.CommonConstants;
 import com.hanzo.common.constant.ParamsConstant;
 import com.hanzo.common.constant.SocialConstant;
@@ -56,10 +57,12 @@ public class HanZoUserDetailServiceImpl implements UserDetailsService {
             if (StringUtils.isNotBlank(permissions)) {
                 grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(permissions);
             }
-            HanZoAuthUser authUser = new HanZoAuthUser(sysUser.getUsername(), password, true, true, true, notLocked,
+            sysUser.setType(AuthConstants.LOGIN_USERNAME_TYPE);
+            HanZoAuthUser authUser = new HanZoAuthUser(sysUser.getUserId(),sysUser.getType(),sysUser.getMobile(),sysUser.getRoleId(),sysUser.getDeptName(),sysUser.getAvatar(),sysUser.getUsername(), password, true, true, true, notLocked,
                     grantedAuthorities);
-
-            BeanUtils.copyProperties(sysUser, authUser);
+           /* HanZoAuthUser authUser = new HanZoAuthUser(sysUser.getUsername(), password, true, true, true, notLocked,
+                    grantedAuthorities);*/
+            //BeanUtils.copyProperties(sysUser, authUser);
             return authUser;
         } else {
             throw new UsernameNotFoundException("");

@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 @Data
 public class JwtParamConfig {
 
-    @Value("${access_token.enable-jwt:false}")
+    @Value("${access_token.enable-jwt:true}")
     private boolean enableJwt;
 
-    @Value("${access_token.jwt-signing-key:hanzo}")
+    @Value("${access_token.jwt-signing-key:hanzo>_<cloud}")
     private String jwtSigningKey;
 
 }
