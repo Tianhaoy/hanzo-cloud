@@ -1,6 +1,6 @@
 package com.hanzo.client.filter;
 
-import com.hanzo.common.util.SecurityUtil;
+import com.hanzo.client.util.SecurityUtil;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;

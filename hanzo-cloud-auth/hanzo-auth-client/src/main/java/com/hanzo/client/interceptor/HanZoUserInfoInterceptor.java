@@ -1,6 +1,6 @@
 package com.hanzo.client.interceptor;
 
-import com.hanzo.common.util.SecurityUtil;
+import com.hanzo.client.util.SecurityUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

@@ -5,6 +5,7 @@ import com.hanzo.client.config.param.HanZoSecurityParamConfig;
 import com.hanzo.common.api.CommonResult;
 import com.hanzo.common.constant.AuthConstants;
 import com.hanzo.common.util.HanZoUtil;
+import com.hanzo.common.util.ResponseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -35,7 +36,7 @@ public class HanZoServerProtectInterceptor implements HandlerInterceptor {
         if (StringUtils.equals(gatewayToken, token)) {
             return true;
         } else {
-            HanZoUtil.makeJsonResponse(response, HttpServletResponse.SC_FORBIDDEN, CommonResult.gatewayForbidden("请通过网关获取资源"));
+            ResponseUtil.makeJsonResponse(response, HttpServletResponse.SC_FORBIDDEN, CommonResult.gatewayForbidden("请通过网关获取资源"));
             return false;
         }
     }

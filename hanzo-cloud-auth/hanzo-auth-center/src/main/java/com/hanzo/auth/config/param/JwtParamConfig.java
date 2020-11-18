@@ -14,6 +14,9 @@ public class JwtParamConfig {
     @Value("${access_token.enable-jwt:true}")
     private boolean enableJwt;
 
+    /**
+     * common模块是写死的 配置的时候最好不要改 继续用这个
+     */
     @Value("${access_token.jwt-signing-key:hanzo>_<cloud}")
     private String jwtSigningKey;
 

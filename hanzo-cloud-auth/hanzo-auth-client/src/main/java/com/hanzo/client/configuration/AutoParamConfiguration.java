@@ -4,13 +4,17 @@ import com.hanzo.client.config.param.HanZoSecurityParamConfig;
 import com.hanzo.client.handler.HanZoAccessDeniedHandler;
 import com.hanzo.client.handler.HanZoAuthExceptionEntryPoint;
 import com.hanzo.client.util.AuthUtil;
+import com.hanzo.client.util.RSAKeyHelper;
 import com.hanzo.common.constant.AuthConstants;
+import com.hanzo.common.exception.TokenException;
 import feign.RequestInterceptor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +24,9 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.util.Base64Utils;
+import org.springframework.util.FileCopyUtils;
+
+import java.io.IOException;
 
 /**
  * @Author thy
@@ -36,7 +43,7 @@ public class AutoParamConfiguration {
     }
 
     @Bean
-    public TokenStore tokenStore() {
+    public TokenStore tokenStore() throws TokenException {
         return new JwtTokenStore(jwtAccessTokenConverter());
     }
 
@@ -46,14 +53,15 @@ public class AutoParamConfiguration {
      * @return
      */
     @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+    public JwtAccessTokenConverter jwtAccessTokenConverter() throws TokenException {
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         DefaultAccessTokenConverter defaultAccessTokenConverter = (DefaultAccessTokenConverter) jwtAccessTokenConverter
                 .getAccessTokenConverter();
         DefaultUserAuthenticationConverter userAuthenticationConverter = new DefaultUserAuthenticationConverter();
         defaultAccessTokenConverter.setUserTokenConverter(userAuthenticationConverter);
-        //设置一个,多个会出现意想不到的问题 access_token将解析错误
-        jwtAccessTokenConverter.setSigningKey("hanzo>_<cloud");//对称秘钥，资源服务器使用该秘钥来验证
+        //获取RSA公钥
+        jwtAccessTokenConverter.setVerifierKey(RSAKeyHelper.getInitPublicKey());
+        //jwtAccessTokenConverter.setSigningKey("hanzo>_<cloud");
         return jwtAccessTokenConverter;
     }
 

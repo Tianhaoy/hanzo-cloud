@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,6 +31,7 @@ import org.springframework.security.oauth2.provider.token.*;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -119,6 +121,7 @@ public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfig
      */
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("hanzo.jks"), "hanzoCloud".toCharArray());
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         DefaultAccessTokenConverter defaultAccessTokenConverter = (DefaultAccessTokenConverter) jwtAccessTokenConverter
                 .getAccessTokenConverter();
@@ -126,11 +129,12 @@ public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfig
         userAuthenticationConverter.setUserDetailsService(userDetailsService);
         defaultAccessTokenConverter.setUserTokenConverter(userAuthenticationConverter);
         //设置一个,多个会出现不可预料的问题 access_token将解析错误
-        jwtAccessTokenConverter.setSigningKey(jwtParamConfig.getJwtSigningKey());
+        jwtAccessTokenConverter.setKeyPair(keyStoreKeyFactory.getKeyPair("hanzo"));
+        //jwtAccessTokenConverter.setSigningKey(jwtParamConfig.getJwtSigningKey());
         return jwtAccessTokenConverter;
     }
 
-    @Bean
+    /*@Bean
     @Primary
     public DefaultTokenServices defaultTokenServices() {
         DefaultTokenServices tokenServices = new DefaultTokenServices();
@@ -147,7 +151,7 @@ public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfig
             defaultTokenServices.setTokenEnhancer(jwtAccessTokenConverter());
         }
         return new ResourceOwnerPasswordTokenGranter(authenticationManager, defaultTokenServices, redisClientDetailsService, oAuth2RequestFactory);
-    }
+    }*/
 
     @Bean
     public DefaultOAuth2RequestFactory oAuth2RequestFactory() {

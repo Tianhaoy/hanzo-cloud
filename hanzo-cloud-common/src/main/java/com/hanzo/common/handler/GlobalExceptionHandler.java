@@ -131,4 +131,14 @@ public class GlobalExceptionHandler {
         e.printStackTrace();
         return CommonResult.failed(message);
     }
+
+    /*@ResponseBody
+    @ExceptionHandler(value = NotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult NotFoundException(HttpRequestMethodNotSupportedException e) {
+        String message = ExceptionConstant.METHOD_NOT_SUPPORTED + StringUtils.substringBetween(e.getMessage(), "'", "'") + ExceptionConstant.REQUEST_METHOD;
+        log.error(message);
+        e.printStackTrace();
+        return CommonResult.failed(message);
+    }*/
 }

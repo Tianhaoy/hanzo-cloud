@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +41,7 @@ public class SysUserController {
     @PreAuthorize("hasAuthority('user:list')")
     @PostMapping(value = "/getUserList",produces = "application/json;charset=UTF-8")
     public CommonResult getUserList(@RequestBody SysUserQueryParam sysUserQueryParam){
+        log.info(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         return CommonResult.success(CommonPage.restPage(sysUserService.findUserDetailList(sysUserQueryParam)));
     }
 

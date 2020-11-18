@@ -88,6 +88,8 @@ public class HanZoSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and().csrf().disable()
                 .httpBasic().disable();
+        //使用jwt的Authentication
+        //http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 
