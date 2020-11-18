@@ -15,7 +15,7 @@ public class JwtParamConfig {
     private boolean enableJwt;
 
     /**
-     * common模块是写死的 配置的时候最好不要改 继续用这个
+     *  作废掉 更改了加密方式为非对称加密
      */
     @Value("${access_token.jwt-signing-key:hanzo>_<cloud}")
     private String jwtSigningKey;

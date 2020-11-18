@@ -45,11 +45,12 @@ public class HanZoResourceServerConfigure extends ResourceServerConfigurerAdapte
         if (ArrayUtils.isEmpty(anonUrls)) {
             anonUrls = new String[]{};
         }
-
+        System.out.println(accessDeniedHandler);
         http.csrf().disable()
                 //异常的时候处理 返回SC_UNAUTHORIZED --> 401状态码未授权异常 有问题 竟然捕获不到很奇怪AccessDeniedException
                 .exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler)
+                .authenticationEntryPoint(new HanZoAuthExceptionEntryPoint())
+                .accessDeniedHandler(new HanZoAccessDeniedHandler())
                 .and()
                 .requestMatchers().antMatchers(SecurityParamConfig.getAuthUri())
                 .and()
@@ -66,8 +67,12 @@ public class HanZoResourceServerConfigure extends ResourceServerConfigurerAdapte
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.authenticationEntryPoint(exceptionEntryPoint)
+        resources.tokenStore(tokenStore)
                 .accessDeniedHandler(accessDeniedHandler)
-                .tokenStore(tokenStore);
+                .authenticationEntryPoint(exceptionEntryPoint);
+
     }
+   /* .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler)
+                .and()*/
 }

@@ -1,10 +1,7 @@
 package com.hanzo.system.config;
 
-import com.hanzo.client.handler.HanZoAccessDeniedHandler;
-import com.hanzo.client.handler.HanZoAuthExceptionEntryPoint;
 import com.hanzo.client.interceptor.HanZoServerProtectInterceptor;
 import com.hanzo.common.handler.GlobalExceptionHandler;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;

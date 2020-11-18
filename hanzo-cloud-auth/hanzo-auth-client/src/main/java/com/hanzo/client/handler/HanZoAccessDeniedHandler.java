@@ -14,7 +14,7 @@ import java.io.IOException;
  * @Date 2020/11/7 16:38
  * @Description:
  * AuthenticationEntryPoint 用来解决匿名用户访问无权限资源时的异常
- * AccessDeineHandler 用来解决认证过的用户访问无权限资源时的异常
+ * AccessDeniedHandler 用来解决认证过的用户访问无权限资源时的异常
  */
 public class HanZoAccessDeniedHandler implements AccessDeniedHandler {
 

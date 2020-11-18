@@ -61,6 +61,11 @@
             <artifactId>jjwt</artifactId>
             <version>${jwt.version}</version>
         </dependency>
+        <!--Spring security -->
+         <dependency>
+             <groupId>org.springframework.security</groupId>
+             <artifactId>spring-security-core</artifactId>
+         </dependency>
     </dependencies>
 
 </project>

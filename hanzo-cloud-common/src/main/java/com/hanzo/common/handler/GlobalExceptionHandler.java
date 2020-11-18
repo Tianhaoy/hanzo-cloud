@@ -8,7 +8,10 @@ import com.hanzo.common.exception.HanZoTransactionalException;
 import com.hanzo.common.exception.TokenException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -20,7 +23,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.nio.file.AccessDeniedException;
 
 /**
  * @Author thy
@@ -29,7 +31,17 @@ import java.nio.file.AccessDeniedException;
  */
 @Slf4j
 @ControllerAdvice
+@Order(Ordered.LOWEST_PRECEDENCE  - 1)
 public class GlobalExceptionHandler {
+
+    @ResponseBody
+    @ExceptionHandler(value = AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public CommonResult handleAccessDeniedException(AccessDeniedException e) {
+        e.printStackTrace();
+        return CommonResult.forbidden(ExceptionConstant.FORBIDDEN);
+    }
+
 
     @ResponseBody
     @ExceptionHandler(value = ApiException.class)
@@ -104,12 +116,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public void handleFileDownloadException(FileDownloadException e) {
         log.error(ExceptionConstant.FILE_DOWNLOAD_EXCEPTION, e);
-    }
-
-    @ExceptionHandler(value = AccessDeniedException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public CommonResult handleAccessDeniedException() {
-        return CommonResult.forbidden(ExceptionConstant.FORBIDDEN);
     }
 
     @ResponseBody
