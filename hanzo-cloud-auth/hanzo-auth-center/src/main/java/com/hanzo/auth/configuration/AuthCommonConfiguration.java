@@ -1,5 +1,6 @@
 package com.hanzo.auth.configuration;
 
+import com.hanzo.auth.config.param.AnonUrlsParamConfig;
 import com.hanzo.auth.config.param.JwtParamConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,5 +18,10 @@ public class AuthCommonConfiguration {
     @Bean
     JwtParamConfig jwtParamConfig(){
         return new JwtParamConfig();
+    }
+
+    @Bean
+    AnonUrlsParamConfig anonUrlsParamConfig(){
+        return new AnonUrlsParamConfig();
     }
 }

@@ -79,3 +79,8 @@ swagger2:
 access_token:
   enable-jwt: true
   jwt-signing-key: hanzo>_<cloud
+
+#开放路径
+auth:
+  center:
+    anonUris: /auth/**,/swaggerList,/oauth/token,/oauth/check_token,/oauth/user/token,/users-anon/**,/smsVerify,/thirdPartyLogin/**

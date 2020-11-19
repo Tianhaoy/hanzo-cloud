@@ -51,4 +51,15 @@ public interface AuthConstants {
      * 登录类型 第三方登录
      */
     int LOGIN_SOCIAL_TYPE = 3;
+
+    /**
+     * 验证码redis key
+     */
+    String CAPTCHA_KEY = "hanzo.captcha.";
+
+    String SMS_CODE_KEY = "hanzo.sms.code.";
+
+    String CAPTCHA_HEADER_KEY = "key";
+
+    String CAPTCHA_HEADER_CODE = "code";
 }

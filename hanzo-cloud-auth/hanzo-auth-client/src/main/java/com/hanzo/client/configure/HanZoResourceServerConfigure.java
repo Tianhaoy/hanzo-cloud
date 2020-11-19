@@ -72,7 +72,4 @@ public class HanZoResourceServerConfigure extends ResourceServerConfigurerAdapte
                 .authenticationEntryPoint(exceptionEntryPoint);
 
     }
-   /* .exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler)
-                .and()*/
 }

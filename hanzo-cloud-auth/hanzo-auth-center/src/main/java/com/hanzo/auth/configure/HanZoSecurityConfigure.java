@@ -1,5 +1,8 @@
 package com.hanzo.auth.configure;
 
+import com.hanzo.auth.config.param.AnonUrlsParamConfig;
+import com.hanzo.auth.filter.ValidateCodeFilter;
+import com.hanzo.auth.service.ValidateCodeService;
 import com.hanzo.common.constant.EndpointConstants;
 import com.hanzo.common.constant.StringConstants;
 import org.apache.commons.lang3.ArrayUtils;
@@ -32,6 +35,10 @@ public class HanZoSecurityConfigure extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private ValidateCodeFilter validateCodeFilter;
+    @Autowired
+    private AnonUrlsParamConfig anonUrlsParamConfig;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -68,18 +75,19 @@ public class HanZoSecurityConfigure extends WebSecurityConfigurerAdapter {
      * @throws Exception http安全异常信息
      */
     @Override
-    //TODO 后期需要修改
     protected void configure(HttpSecurity http) throws Exception {
-        String anonUrl = "/swaggerList,/oauth/token,/oauth/check_token,/oauth/user/token,/users-anon/**,/smsVerify,/thirdPartyLogin/**";
-        String[] anonUrls = StringUtils.split(anonUrl, StringConstants.COMMA);
+        //String anonUrl = "/auth/**,/swaggerList,/oauth/token,/oauth/check_token,/oauth/user/token,/users-anon/**,/smsVerify,/thirdPartyLogin/**";
+        //String[] anonUrls = StringUtils.split(anonUrl, StringConstants.COMMA);
+        String[] anonUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(anonUrlsParamConfig.getAnonUris(), StringConstants.COMMA);
         if (ArrayUtils.isEmpty(anonUrls)) {
             anonUrls = new String[]{};
         }
-        http.requestMatchers()
+        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .requestMatchers()
                 .antMatchers(EndpointConstants.OAUTH_ALL, EndpointConstants.LOGIN)
                 .and()
                 .authorizeRequests()
-                //.antMatchers(anonUrls).permitAll()//白名单不拦截
+                .antMatchers(anonUrls).permitAll()//白名单不拦截
                 .antMatchers(EndpointConstants.OAUTH_ALL).authenticated()
                 .and()
                 .formLogin()
