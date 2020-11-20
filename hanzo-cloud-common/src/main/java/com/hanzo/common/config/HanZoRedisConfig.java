@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import com.hanzo.common.service.BaseRedisService;
 import com.hanzo.common.service.RedisService;
 import com.hanzo.common.service.impl.RedisServiceImpl;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
@@ -64,6 +66,11 @@ public class HanZoRedisConfig {
     @Bean
     public RedisService redisService(){
         return new RedisServiceImpl();
+    }
+
+    @Bean
+    public BaseRedisService baseRedisService() {
+        return new BaseRedisService();
     }
 
 }

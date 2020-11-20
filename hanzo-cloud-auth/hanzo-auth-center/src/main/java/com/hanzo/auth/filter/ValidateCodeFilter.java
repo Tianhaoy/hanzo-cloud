@@ -42,7 +42,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@Nonnull HttpServletRequest httpServletRequest, @Nonnull HttpServletResponse httpServletResponse, @Nonnull FilterChain filterChain) throws ServletException, IOException {
         String clientBase64 = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
         /**
-         * 只作用于端点oauth/token
+         * 只作用于端点oauth/token 以及认证类型为password模式
          */
         RequestMatcher matcher = new AntPathRequestMatcher(EndpointConstants.OAUTH_TOKEN, HttpMethod.POST.toString());
         if (matcher.matches(httpServletRequest)

@@ -9,6 +9,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.TimeoutUtils;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationUtils;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.Duration;
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit;
  * @Description:定义常用的Redis操作
  */
 @Slf4j
+@Service
 public class BaseRedisService {
 
     @Autowired
