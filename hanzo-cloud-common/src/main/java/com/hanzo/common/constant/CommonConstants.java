@@ -42,9 +42,9 @@ public interface CommonConstants {
     String DEFAULT_PASSWORD = "123456";
 
     /**
-     * 注册用户角色ID
+     * 注册用户默认角色ID 可查看，新增，导出，不可修改，删除
      */
-    Integer REGISTER_ROLE_ID = 2;
+    Integer REGISTER_ROLE_ID = 3;
 
     /**
      * 测试导出文档路径

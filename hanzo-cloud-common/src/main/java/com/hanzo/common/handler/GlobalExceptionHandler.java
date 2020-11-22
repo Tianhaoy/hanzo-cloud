@@ -2,10 +2,7 @@ package com.hanzo.common.handler;
 
 import com.hanzo.common.api.CommonResult;
 import com.hanzo.common.constant.ExceptionConstant;
-import com.hanzo.common.exception.ApiException;
-import com.hanzo.common.exception.FileDownloadException;
-import com.hanzo.common.exception.HanZoTransactionalException;
-import com.hanzo.common.exception.TokenException;
+import com.hanzo.common.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.Ordered;
@@ -50,6 +47,15 @@ public class GlobalExceptionHandler {
         if (e.getErrorCode() != null) {
             return CommonResult.failed(e.getErrorCode());
         }
+        return CommonResult.failed(e.getMessage());
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = HanZoException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult HanZoException(HanZoException e) {
+        log.error(e.getMessage());
+        e.printStackTrace();
         return CommonResult.failed(e.getMessage());
     }
 

@@ -10,6 +10,15 @@ import org.apache.commons.lang3.RandomStringUtils;
 public interface SocialConstant {
 
     String SOCIAL_LOGIN = "social_login";
+
+    String NOT_BIND = "not_bind";
+
+    String USERNAME = "username";
+
+    String PASSWORD = "password";
+
+    String SOCIAL_LOGIN_SUCCESS = "social_login_success";
+
     ThreadLocal<String> PASSWORD_THREAD_LOCAL = new ThreadLocal<>();
 
     /**

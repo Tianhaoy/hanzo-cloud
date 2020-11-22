@@ -134,7 +134,7 @@ public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfig
         return jwtAccessTokenConverter;
     }
 
-    /*@Bean
+    @Bean
     @Primary
     public DefaultTokenServices defaultTokenServices() {
         DefaultTokenServices tokenServices = new DefaultTokenServices();
@@ -148,10 +148,14 @@ public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfig
     public ResourceOwnerPasswordTokenGranter resourceOwnerPasswordTokenGranter(AuthenticationManager authenticationManager, OAuth2RequestFactory oAuth2RequestFactory) {
         DefaultTokenServices defaultTokenServices = defaultTokenServices();
         if (jwtParamConfig.isEnableJwt()) {
-            defaultTokenServices.setTokenEnhancer(jwtAccessTokenConverter());
+            // token增强链
+            TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+            // 把jwt增强，与额外信息增强加入到增强链
+            tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), jwtAccessTokenConverter()));
+            defaultTokenServices.setTokenEnhancer(tokenEnhancerChain);
         }
         return new ResourceOwnerPasswordTokenGranter(authenticationManager, defaultTokenServices, redisClientDetailsService, oAuth2RequestFactory);
-    }*/
+    }
 
     @Bean
     public DefaultOAuth2RequestFactory oAuth2RequestFactory() {

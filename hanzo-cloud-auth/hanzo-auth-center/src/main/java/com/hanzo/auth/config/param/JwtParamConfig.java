@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 @Data
 public class JwtParamConfig {
 
+    /**
+     * 现在是使用jwt形式的token  必须设置为true
+     */
     @Value("${access_token.enable-jwt:true}")
     private boolean enableJwt;
 
@@ -19,5 +22,7 @@ public class JwtParamConfig {
      */
     @Value("${access_token.jwt-signing-key:hanzo>_<cloud}")
     private String jwtSigningKey;
+
+    private String socialClientId = "app";
 
 }
