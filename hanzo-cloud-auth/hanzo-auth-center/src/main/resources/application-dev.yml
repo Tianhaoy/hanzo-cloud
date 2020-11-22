@@ -83,4 +83,30 @@ access_token:
 #开放路径
 auth:
   center:
-    anonUris: /auth/**,/swaggerList,/oauth/token,/oauth/check_token,/oauth/user/token,/users-anon/**,/smsVerify,/thirdPartyLogin/**
+    anonUris: /auth/**,/swaggerList,/oauth/token,/oauth/check_token,/oauth/user/token,/users-anon/**,/smsVerify,/social/**
+
+#一款快速集成oauth2 第三方登录的开源工具justAuth配置
+justauth:
+  enabled: true
+  type:
+    QQ:
+      client-id: xxx
+      client-secret: xxx
+      redirect-uri: http://localhost:6301/social/callback/qq
+      union-id: false
+    GITHUB:
+      client-id: xxxxx
+      client-secret: xxxxxx
+      redirect-uri: http://localhost:6301/social/callback/github
+    WECHAT_OPEN:
+      client-id: xxxxxxx
+      client-secret: xxxxxxx
+      redirect-uri: http://localhost:6301/social/callback/wechat
+    WEIBO:
+      client-id: xxxxx
+      client-secret: xxxxxx
+      redirect-uri: http://localhost:6301/social/callback/weibo
+  cache:
+    type: redis
+    prefix: 'HANZO::CLOUD::SOCIAL::STATE::'
+    timeout: 1h
