@@ -1,14 +1,19 @@
 package com.hanzo.common.config.swagger;
 
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @Author thy
@@ -27,7 +32,10 @@ public class HanZoSwagger2Config {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(swaggerParamConfig.getApiBasePackage()))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .securitySchemes(securitySchemes())
+                .securityContexts(securityContexts())
+                .pathMapping("/");
     }
 
     private ApiInfo apiInfo() {
@@ -37,5 +45,32 @@ public class HanZoSwagger2Config {
                 .contact(new Contact(swaggerParamConfig.getContactName(),swaggerParamConfig.getContactUrl(),swaggerParamConfig.getContactEmail()))
                 .version(swaggerParamConfig.getVersion())
                 .build();
+    }
+
+    private List<SecurityScheme> securitySchemes() {
+        List<ApiKey> apiKeyList= new ArrayList<>();
+        apiKeyList.add(new ApiKey("Authorization", "Authorization", "header"));
+        apiKeyList.add(new ApiKey("GatewayToken", "GatewayToken", "header"));
+        return Collections.unmodifiableList(apiKeyList);
+    }
+
+    /**
+     * swagger2 认证的安全上下文
+     */
+    private List<SecurityContext> securityContexts() {
+        List<SecurityContext> securityContexts=new ArrayList<>();
+        securityContexts.add(
+                SecurityContext.builder()
+                        .securityReferences(defaultAuth())
+                        .forPaths(PathSelectors.regex("^(?!auth).*$"))
+                        .build());
+        return securityContexts;
+    }
+
+    List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Lists.newArrayList(new SecurityReference("BearerToken", authorizationScopes));
     }
 }
