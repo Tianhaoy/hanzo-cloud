@@ -49,11 +49,7 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
 
     @Override
     public void check(String key, String code) throws CaptchaException {
-        System.out.println(key);
-        //hanzo.captcha.a52d53a1-b47c-4650-8ed5-d0593121f0cf
         String codeFromRedis = baseRedisService.get(AuthConstants.CAPTCHA_KEY + key).toString();
-        System.out.println(codeFromRedis);
-        System.out.println(code);
         if (StringUtils.isBlank(code)) {
             throw new CaptchaException("请输入验证码");
         }

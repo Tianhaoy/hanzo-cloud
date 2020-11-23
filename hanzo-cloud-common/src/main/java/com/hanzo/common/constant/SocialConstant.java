@@ -17,7 +17,7 @@ public interface SocialConstant {
 
     String PASSWORD = "password";
 
-    String SOCIAL_LOGIN_SUCCESS = "social_login_success";
+    String SOCIAL_LOGIN_SUCCESS = "第三方登录成功";
 
     ThreadLocal<String> PASSWORD_THREAD_LOCAL = new ThreadLocal<>();
 
