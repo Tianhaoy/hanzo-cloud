@@ -99,37 +99,4 @@ public class SocialController {
         return CommonResult.success(oAuth2AccessToken);
     }
 
-    /**
-     * 绑定
-     * @param bindUser bindUser
-     * @param authUser authUser
-     */
-    @ResponseBody
-    @PostMapping("bind")
-    public CommonResult bind(SocialBindUser bindUser, AuthUser authUser) throws HanZoException {
-        socialLoginService.bind(bindUser, authUser);
-        return CommonResult.success();
-    }
-
-    /**
-     * 解绑
-     * @param bindUser
-     * @param oauthType
-     */
-    @DeleteMapping("unbind")
-    public CommonResult unbind(SocialBindUser bindUser, String oauthType) throws HanZoException {
-        socialLoginService.unbind(bindUser, oauthType);
-        return CommonResult.success();
-    }
-
-    /**
-     * 根据用户名获取绑定关系
-     * @param username 用户名
-     * @return
-     */
-    @GetMapping("getSocialBindInfo/{username}")
-    public CommonResult findUserSocialBindInfo(@NotBlank(message = "用户名为空！") @PathVariable String username) {
-        List<SysSocialUser> sysSocialUsers = socialLoginService.findUserSocialBindInfo(username);
-        return CommonResult.success(sysSocialUsers);
-    }
 }

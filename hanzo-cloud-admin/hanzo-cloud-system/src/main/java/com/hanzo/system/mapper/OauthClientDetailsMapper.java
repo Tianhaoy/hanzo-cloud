@@ -1,7 +1,7 @@
-package com.hanzo.auth.mapper;
+package com.hanzo.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hanzo.auth.entity.OauthClientDetails;
+import com.hanzo.system.entity.OauthClientDetails;
 import org.springframework.stereotype.Repository;
 
 /**

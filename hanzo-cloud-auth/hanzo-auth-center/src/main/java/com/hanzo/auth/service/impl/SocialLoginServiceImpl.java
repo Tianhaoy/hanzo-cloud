@@ -103,37 +103,6 @@ public class SocialLoginServiceImpl implements SocialLoginService {
         return this.getOauth2AccessToken(newUser);
     }
 
-    @Override
-    public void bind(SocialBindUser bindUser, AuthUser authUser) throws HanZoException {
-        String username = bindUser.getBindUsername();
-        if (isCurrentUser(username)) {
-            SysSocialUser sysSocialUser = sysSocialUserService.selectBySocialInfo(authUser.getUuid(),authUser.getSource());
-            if (sysSocialUser != null) {
-                throw new HanZoException("绑定失败，该第三方账号已绑定" + sysSocialUser.getUsername() + "系统账户");
-            }
-            SysUser sysUser = new SysUser();
-            sysUser.setUsername(username);
-            this.saveSocialBindInfo(sysUser, authUser);
-        } else {
-            throw new HanZoException("绑定失败，您无权绑定别人的账号");
-        }
-    }
-
-    @Override
-    public void unbind(SocialBindUser bindUser, String oauthType) throws HanZoException {
-        String username = bindUser.getBindUsername();
-        if (isCurrentUser(username)) {
-            sysSocialUserService.deleteByUserInfo(username, oauthType);
-        } else {
-            throw new HanZoException("解绑失败，您无权解绑别人的账号");
-        }
-    }
-
-    @Override
-    public List<SysSocialUser> findUserSocialBindInfo(String username) {
-        return sysSocialUserService.findUserSocialBindInfo(username);
-    }
-
     /**
      * 保存第三方系统与hanzo系统账号的绑定信息
      * @param sysUser
@@ -180,15 +149,5 @@ public class SocialLoginServiceImpl implements SocialLoginService {
         String grantTypes = String.join(StringConstants.COMMA, clientDetails.getAuthorizedGrantTypes());
         TokenRequest tokenRequest = new TokenRequest(requestParameters, clientDetails.getClientId(), clientDetails.getScope(), grantTypes);
         return granter.grant(GrantTypeConstant.PASSWORD, tokenRequest);
-    }
-
-    /**
-     * 是否是当前用户
-     * @param username
-     * @return
-     */
-    private boolean isCurrentUser(String username) {
-        //String currentUsername = HanZoUtil.getCurrentUsername();
-        return StringUtils.equalsIgnoreCase(username, null);
     }
 }

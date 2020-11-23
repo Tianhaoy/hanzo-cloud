@@ -93,11 +93,12 @@ hanZoAsync:
   keepAliveSeconds: 60
   queueCapacity : 200
 
+#授权client相关配置 enable 固定为true  onlyFetchByGateway 只允许从网关进入  anonUris不带token也可以访问路径
 hanzo:
   cloud:
     security:
       enable: true
       onlyFetchByGateway: true
-      anonUris: /actuator/**,/captcha,/social/**,/v2/api-docs,/v2/api-docs-ext,/login,/resource/**
+      anonUris: /actuator/**,/v2/api-docs,/v2/api-docs-ext,/resource/**
 
 

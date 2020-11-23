@@ -1,4 +1,4 @@
-package com.hanzo.auth.dto;
+package com.hanzo.system.dto;
 
 import com.hanzo.common.model.QueryRequest;
 import io.swagger.annotations.ApiModel;

@@ -35,19 +35,4 @@ public class SysSocialUserServiceImpl extends ServiceImpl<SysSocialUserMapper, S
         this.save(sysSocialUser);
     }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void deleteByUserInfo(String username, String oauthType) {
-        LambdaQueryWrapper<SysSocialUser> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SysSocialUser::getUsername, username);
-        queryWrapper.eq(SysSocialUser::getSocialName, oauthType);
-        this.remove(queryWrapper);
-    }
-
-    @Override
-    public List<SysSocialUser> findUserSocialBindInfo(String username) {
-        LambdaQueryWrapper<SysSocialUser> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SysSocialUser::getUsername, username);
-        return this.baseMapper.selectList(queryWrapper);
-    }
 }

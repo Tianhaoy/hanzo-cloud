@@ -1,16 +1,14 @@
-package com.hanzo.auth.service.impl;
+package com.hanzo.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.injector.methods.SelectById;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
-import com.hanzo.auth.dto.OauthClientQueryParam;
-import com.hanzo.auth.entity.OauthClientDetails;
-import com.hanzo.auth.entity.SysUser;
-import com.hanzo.auth.mapper.OauthClientDetailsMapper;
-import com.hanzo.auth.service.IOauthClientDetailsService;
 import com.hanzo.common.constant.StringConstants;
 import com.hanzo.common.exception.HanZoException;
+import com.hanzo.system.dto.OauthClientQueryParam;
+import com.hanzo.system.entity.OauthClientDetails;
+import com.hanzo.system.mapper.OauthClientDetailsMapper;
+import com.hanzo.system.service.IOauthClientDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

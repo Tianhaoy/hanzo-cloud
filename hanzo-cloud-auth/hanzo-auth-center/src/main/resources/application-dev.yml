@@ -83,7 +83,7 @@ access_token:
 #开放路径
 auth:
   center:
-    anonUris: /auth/**,/swaggerList,/oauth/token,/oauth/check_token,/oauth/user/token,/users-anon/**,/smsVerify,/social/**
+    anonUris: /auth/**,/social/**,/oauth/**,/v2/api-docs,/v2/api-docs-ext,/actuator/**
 
 #一款快速集成oauth2 第三方登录的开源工具justAuth配置
 justauth:

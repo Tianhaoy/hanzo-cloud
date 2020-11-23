@@ -1,4 +1,4 @@
-package com.hanzo.auth.entity;
+package com.hanzo.system.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

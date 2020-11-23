@@ -43,24 +43,4 @@ public interface SocialLoginService {
      */
     OAuth2AccessToken signLogin(SocialBindUser registerUser, AuthUser authUser)throws HanZoException;
 
-    /**
-     * 绑定第三方账号
-     * @param bindUser
-     * @param authUser
-     */
-    void bind(SocialBindUser bindUser, AuthUser authUser) throws HanZoException;
-
-    /**
-     * 解绑第三方账号
-     * @param bindUser
-     * @param oauthType
-     */
-    void unbind(SocialBindUser bindUser, String oauthType)throws HanZoException;
-
-    /**
-     * 根据用户名获取第三方账号绑定关系
-     * @param username
-     * @return
-     */
-    List<SysSocialUser> findUserSocialBindInfo(String username);
 }

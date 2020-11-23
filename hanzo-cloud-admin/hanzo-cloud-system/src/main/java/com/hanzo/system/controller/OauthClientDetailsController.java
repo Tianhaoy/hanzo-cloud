@@ -1,18 +1,16 @@
-package com.hanzo.auth.controller;
+package com.hanzo.system.controller;
 
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import com.hanzo.auth.dto.OauthClientQueryParam;
-import com.hanzo.auth.entity.OauthClientDetails;
-import com.hanzo.auth.service.IOauthClientDetailsService;
 import com.hanzo.common.api.CommonResult;
 import com.hanzo.common.exception.HanZoException;
+import com.hanzo.system.dto.OauthClientQueryParam;
+import com.hanzo.system.entity.OauthClientDetails;
+import com.hanzo.system.service.IOauthClientDetailsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

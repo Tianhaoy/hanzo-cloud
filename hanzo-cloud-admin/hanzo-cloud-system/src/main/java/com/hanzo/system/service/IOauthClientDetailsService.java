@@ -1,11 +1,12 @@
-package com.hanzo.auth.service;
+package com.hanzo.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hanzo.auth.dto.OauthClientQueryParam;
-import com.hanzo.auth.entity.OauthClientDetails;
 import com.hanzo.common.exception.HanZoException;
+import com.hanzo.system.dto.OauthClientQueryParam;
+import com.hanzo.system.entity.OauthClientDetails;
 
 import java.util.List;
+
 
 /**
  * <p>

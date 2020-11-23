@@ -37,20 +37,19 @@ public class SecurityController {
      * security获取当前登录用户的方法是SecurityContextHolder.getContext().getAuthentication()
      * 返回值是接口org.springframework.security.core.Authentication，又继承了Principal
      * 这里的实现类是org.springframework.security.oauth2.provider.OAuth2Authentication
-     * 因此这只是一种写法，下面注释掉的三个方法也都一样，这四个方法任选其一即可，也只能选一个，毕竟uri相同，否则启动报错
      * @return
      */
-    @GetMapping("/user-me")
+    @GetMapping("/getUserName")
     @ApiOperation("获取当前用户名")
     public Authentication principal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.debug("user-me:{}", authentication.getName());
+        log.debug("username:{}", authentication.getName());
         return authentication;
     }
 
     @ApiOperation("退出登录")
-    @DeleteMapping("signout")
-    public CommonResult signout(HttpServletRequest request) throws HanZoException {
+    @DeleteMapping("signOut")
+    public CommonResult signOut(HttpServletRequest request) throws HanZoException {
         String authorization = request.getHeader("Authorization");
         String token = StringUtils.replace(authorization, "bearer ", "");
         if (!consumerTokenServices.revokeToken(token)) {

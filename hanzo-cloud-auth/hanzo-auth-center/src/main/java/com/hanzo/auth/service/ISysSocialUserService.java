@@ -29,17 +29,4 @@ public interface ISysSocialUserService extends IService<SysSocialUser> {
      */
     void saveSysSocialUser(SysSocialUser sysSocialUser);
 
-    /**
-     *  删除
-     * @param username  用户名
-     * @param oauthType 平台名称
-     */
-    void deleteByUserInfo(String username, String oauthType);
-
-    /**
-     * 根据用户名获取第三方账号绑定关系
-     * @param username
-     * @return
-     */
-    List<SysSocialUser> findUserSocialBindInfo(String username);
 }
