@@ -21,6 +21,7 @@
         <module>hanzo-cloud-msg</module>
         <module>hanzo-cloud-admin</module>
         <module>hanzo-cloud-demo</module>
+        <module>hanzo-cloud-starter</module>
     </modules>
 
     <parent>

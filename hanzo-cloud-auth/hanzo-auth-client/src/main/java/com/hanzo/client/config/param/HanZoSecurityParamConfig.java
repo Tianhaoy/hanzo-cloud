@@ -38,7 +38,7 @@ public class HanZoSecurityParamConfig {
     private Boolean onlyFetchByGateway;
 
     /**
-     * jwt加密key 对称 暂时固定
+     * jwt对称加密key 现已经采用REA非对称加密  已作废
      */
     private String jwtSigningKey = "hanzo>_<cloud";
 }

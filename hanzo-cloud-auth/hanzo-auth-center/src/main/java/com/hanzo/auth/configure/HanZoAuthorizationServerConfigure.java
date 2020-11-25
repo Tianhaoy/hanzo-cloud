@@ -121,6 +121,7 @@ public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfig
      */
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        //hanzo.jks 是文件名字  hanzoCloud 是生成jks的时候设置的密码
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("hanzo.jks"), "hanzoCloud".toCharArray());
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         DefaultAccessTokenConverter defaultAccessTokenConverter = (DefaultAccessTokenConverter) jwtAccessTokenConverter
@@ -128,7 +129,7 @@ public class HanZoAuthorizationServerConfigure extends AuthorizationServerConfig
         DefaultUserAuthenticationConverter userAuthenticationConverter = new DefaultUserAuthenticationConverter();
         userAuthenticationConverter.setUserDetailsService(userDetailsService);
         defaultAccessTokenConverter.setUserTokenConverter(userAuthenticationConverter);
-        //设置一个,多个会出现不可预料的问题 access_token将解析错误
+        // hanzo 是jks生成时候的别名
         jwtAccessTokenConverter.setKeyPair(keyStoreKeyFactory.getKeyPair("hanzo"));
         //jwtAccessTokenConverter.setSigningKey(jwtParamConfig.getJwtSigningKey());
         return jwtAccessTokenConverter;

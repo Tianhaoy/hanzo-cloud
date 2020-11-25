@@ -1,9 +1,21 @@
 # hanzo-cloud
-**半藏微服务**是基于SpringCloud(Hoxton.SR5) + SpringBoot(2.3.0.RELEASE)的 SaaS型微服务后端脚手架。（目前授权中心已经开发完成。1.0版本12月底会开发完成。请持续关注）
-核心技术采用SpringBoot、Nacos、Gateway、OpenFegin、Ribbon、Hystrix(后期会采用sentienl)、JWT Token、Mybatis Plus、Mysql、Redis、ElasticSearch、RabbitMQ、Seata、FastDFS等主要框架和中间件。
+**半藏微服务**是基于SpringCloud(Hoxton.SR5) + SpringBoot(2.3.0.RELEASE)的 SaaS型微服务后端脚手架。
+核心技术采用SpringCloud、SpringBoot、Nacos、Gateway、OpenFegin、Ribbon、Hystrix(后期会采用sentienl)、JWT Token、Mybatis Plus、Mysql、Redis、ElasticSearch、RabbitMQ、kafka、RocketMQ、Seata、FastDFS等主要框架和中间件。
 希望能努力打造一套 SaaS基础框架 - 分布式微服务架构 - 分布式XXL-Job - 持续集成 - 自动化部署K8s - 系统监测 的解决方案。 
-旨在帮助想要学习微服务的java er快速入门（我也是新手），实现基础能力，不涉及具体业务。具备注册中心、网关统一鉴权、授权中心、消息队列、搜索引擎、分布式事务、分布式定时任务等多个模块。
-## 技术选型 
+具备注册中心、网关、授权中心、消息驱动、消息队列、搜索引擎、链式追踪、分布式事务、分布式定时任务等多个模块。
+
+### 开发中
+    hanzo-gateway-server 网关
+    hanzo-auth-center 授权中心
+    hanzo-auth-client 授权客户端jar包
+    hanzo-cloud-system 系统管理模块
+    hanzo-cloud-monitor 监控模块
+    这五个模块开发完毕
+    启动gateway center system monitor这四个模块即可 
+    可以访问knif4j接口文档查看如何登录 或者入微信群
+
+## 没时间写如何登录 过段时间会写文档
+
 ### 后端技术
 | 技术                           | 说明               | 
 | ------------------------------|--------------------| 
@@ -25,25 +37,9 @@
 | OSS                           | 对象存储             |
 | LogStash                      | 日志收集             |
 | Lombok                        | 对象封装工具          |
-| XXL-job                       | 分布式任务           |**暂时不会**
-| Seata                         | 全局事务管理框架      |**暂时不会**
-| Docker                        | 应用容器引擎          |**暂时不会**
-| Portainer                     | 可视化Docker容器管理  |**暂时不会**
-| Jenkins                       | 自动化部署工具        |**暂时不会**
-| K8s                           | 自动化部署           |**暂时不会**
-
-## 环境搭建
-
-### 开发环境
-
-| 工具          | 版本号 | 下载                                                         |
-| ------------- | ------ | ------------------------------------------------------------ |
-| JDK           | 1.8    | https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html |
-| Mysql         | 8.0    | https://www.mysql.com/                                       |
-| Redis         | 5.0    | https://redis.io/download                                    |
-| Elasticsearch | 7.5.0  | https://www.elastic.co/cn/downloads/elasticsearch            |
-| Kibana        | 7.5.0  | https://www.elastic.co/cn/downloads/kibana                   |
-| Logstash      | 7.5.0  | https://www.elastic.co/cn/downloads/logstash                 |
-| MongoDb       | 4.2.5  | https://www.mongodb.com/download-center                      |
-| RabbitMq      | 3.7.14 | http://www.rabbitmq.com/download.html                        |
-| nginx         | 1.9.9  | http://nginx.org/en/download.html                            |
+| XXL-job                       | 分布式任务           |
+| Seata                         | 全局事务管理框架      |
+| Docker                        | 应用容器引擎          |
+| Portainer                     | 可视化Docker容器管理  |
+| Jenkins                       | 自动化部署工具        |
+| K8s                           | 自动化部署           |

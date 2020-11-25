@@ -20,9 +20,12 @@ public class JwtParamConfig {
     /**
      *  作废掉 更改了加密方式为非对称加密
      */
-    @Value("${access_token.jwt-signing-key:hanzo>_<cloud}")
-    private String jwtSigningKey;
+    /*@Value("${access_token.jwt-signing-key:hanzo>_<cloud}")
+    private String jwtSigningKey;*/
 
+    /**
+     * 第三方的clientId 固定为app 方便区分
+     */
     private String socialClientId = "app";
 
 }
