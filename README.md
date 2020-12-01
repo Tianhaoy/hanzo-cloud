@@ -38,7 +38,7 @@
 
 ### 开发中
     hanzo-gateway-server 网关
-    hanzo-auth-center 授权中心
+    hanzo-auth-center 认证中心
     hanzo-auth-client 授权客户端jar包
     hanzo-cloud-system 系统管理模块
     hanzo-cloud-monitor 监控模块
