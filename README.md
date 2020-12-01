@@ -44,9 +44,9 @@
     hanzo-cloud-monitor 监控模块
     这五个模块开发完毕
     启动gateway center system monitor这四个模块即可 
-    可以访问knif4j接口文档查看如何登录 或者入微信群
-    启动教程地址：
-## 没时间写如何登录 过段时间会写文档
+   
+## 导入项目、登录访问接口流程以及开发文档地址 (请仔细阅读文档启动，文档最后有微信联系方式，启动失败可以加微信入群讨论)
+   [https://www.kancloud.cn/hanzo/hanzo](https://www.kancloud.cn/hanzo/hanzo)
 
 ### 后端技术
 | 技术                           | 说明               | 
@@ -82,7 +82,7 @@ hanzo-cloud -- 父项目,各模块分离，方便集成和微服务
 │  ├─hanzo-cloud-admin -- 后台管理父模块
 │  │  ├─hanzo-cloud-system -- 系统管理子模块[6401]
 │  │─hanzo-cloud-auth -- 统一认证父模块 
-│  │  ├─hanzo-auth-center -- 授权中心子模块[6301]
+│  │  ├─hanzo-auth-center -- 认证中心子模块[6301]
 │  │  ├─hanzo-auth-client -- 授权客户端client公共jar包模块
 │  │─hanzo-cloud-common -- 公共jar包模块
 │  │─hanzo-cloud-demo -- 测试父模块
