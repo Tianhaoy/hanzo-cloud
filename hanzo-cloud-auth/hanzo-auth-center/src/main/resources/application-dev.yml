@@ -75,10 +75,9 @@ swagger2:
     contactUrl: http://blog.babehome.com
     contactEmail: 246965218@qq.com
 
-#是否开启jwt
+#是否开启jwt 目前都配置成true
 access_token:
   enable-jwt: true
-  jwt-signing-key: hanzo>_<cloud
 
 #开放路径
 auth:
@@ -94,14 +93,6 @@ justauth:
       client-secret: xxx
       redirect-uri: http://localhost:6301/social/callback/qq
       union-id: false
-    GITHUB:
-      client-id: xxxxx
-      client-secret: xxxxxx
-      redirect-uri: http://localhost:6301/social/callback/github
-    WECHAT_OPEN:
-      client-id: xxxxxxx
-      client-secret: xxxxxxx
-      redirect-uri: http://localhost:6301/social/callback/wechat
     WEIBO:
       client-id: xxxxx
       client-secret: xxxxxx
