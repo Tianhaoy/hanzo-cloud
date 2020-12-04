@@ -40,4 +40,43 @@
         u.description,
         u.avatar
     </select>
+
+    <select id="findSysUserByUserId" resultType="com.hanzo.auth.entity.SysUser">
+        SELECT
+        u.user_id userId,
+        u.username,
+        u.email,
+        u.mobile,
+        u.password,
+        u.status,
+        u.create_time,
+        u.sex sex,
+        u.dept_id,
+        u.last_login_time,
+        u.modify_time,
+        u.description,
+        u.avatar,
+        d.dept_name,
+        GROUP_CONCAT(r.role_id) roleId,
+        GROUP_CONCAT(r.role_name) roleName
+        FROM
+        sys_user u
+        LEFT JOIN sys_dept d ON (u.dept_id = d.dept_id)
+        LEFT JOIN sys_user_role ur ON (u.user_id = ur.user_id)
+        LEFT JOIN sys_role r ON (r.role_id = ur.role_id)
+        WHERE 1 = 1
+            AND u.user_id = #{userId}
+        group by u.username,
+        u.user_id,
+        u.email,
+        u.mobile,
+        u.status,
+        u.create_time,
+        u.sex,
+        u.dept_id,
+        u.last_login_time,
+        u.modify_time,
+        u.description,
+        u.avatar
+    </select>
 </mapper>

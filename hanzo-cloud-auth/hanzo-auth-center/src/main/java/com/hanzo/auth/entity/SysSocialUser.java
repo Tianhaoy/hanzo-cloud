@@ -2,6 +2,8 @@ package com.hanzo.auth.entity;
 
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.*;
 
 /**
@@ -22,9 +24,10 @@ public class SysSocialUser implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * hanzo系统用户名
+     * 第三方平台账号主键
      */
-    private String username;
+    @TableId(value = "social_user_id", type = IdType.AUTO)
+    private Integer socialUserId;
 
     /**
      * 第三方平台名称

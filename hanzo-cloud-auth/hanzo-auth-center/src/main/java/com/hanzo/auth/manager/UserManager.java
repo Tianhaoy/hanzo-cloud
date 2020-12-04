@@ -1,5 +1,6 @@
 package com.hanzo.auth.manager;
 
+import cn.hutool.core.lang.UUID;
 import com.hanzo.auth.entity.SysMenu;
 import com.hanzo.auth.entity.SysUser;
 import com.hanzo.auth.entity.SysUserRole;
@@ -9,7 +10,9 @@ import com.hanzo.auth.mapper.SysUserRoleMapper;
 import com.hanzo.common.constant.CommonConstants;
 import com.hanzo.common.constant.StringConstants;
 import lombok.extern.slf4j.Slf4j;
+import me.zhyd.oauth.model.AuthUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +37,8 @@ public class UserManager {
     private SysMenuMapper sysMenuMapper;
     @Autowired
     private SysUserRoleMapper sysUserRoleMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * 根据用户名查找用户信息
@@ -81,6 +86,44 @@ public class UserManager {
         // 注册用户角色 ID
         sysUserRole.setRoleId(CommonConstants.REGISTER_ROLE_ID);
         sysUserRoleMapper.insert(sysUserRole);
+        return sysUser;
+    }
+
+    /**
+     * 根据第三方平台账户信息创建本地账号信息
+     * @param authUser
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public SysUser createLocalUser(AuthUser authUser) {
+        SysUser sysUser = new SysUser();
+        sysUser.setUsername(authUser.getUsername()+ UUID.randomUUID());//用户名为第三方平台返回的用户名+4位uuid
+        sysUser.setPassword(passwordEncoder.encode(CommonConstants.DEFAULT_PASSWORD));
+        sysUser.setCreateTime(new Date());
+        sysUser.setStatus(CommonConstants.STATUS_VALID);
+        sysUser.setSex(CommonConstants.SEX_UNKNOW);
+        sysUser.setAvatar(CommonConstants.DEFAULT_AVATAR);
+        sysUser.setDescription("注册用户");
+        sysUserMapper.insert(sysUser);
+
+        SysUserRole sysUserRole = new SysUserRole();
+        sysUserRole.setUserId(sysUser.getUserId());
+        // 注册用户角色 ID
+        sysUserRole.setRoleId(CommonConstants.REGISTER_ROLE_ID);
+        sysUserRoleMapper.insert(sysUserRole);
+        return sysUser;
+    }
+
+    /**
+     * 根据userId查询系统用户信息
+     * @param userId
+     * @return
+     */
+    public SysUser findSysUserByUserId(String userId) {
+        SysUser sysUser = sysUserMapper.findSysUserByUserId(Integer.valueOf(userId));
+        if (sysUser != null) {
+            //TODO 后期会有其他拓展
+        }
         return sysUser;
     }
 }

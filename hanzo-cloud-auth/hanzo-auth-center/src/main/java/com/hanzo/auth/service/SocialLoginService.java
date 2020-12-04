@@ -27,20 +27,20 @@ public interface SocialLoginService {
     CommonResult resolveLogin(String oauthType, AuthCallback callback) throws HanZoException;
 
     /**
-     * 绑定登录
+     * 绑定登录--作废
      * @param bindUser
      * @param authUser
      * @return
      */
-    OAuth2AccessToken bindLogin(SocialBindUser bindUser, AuthUser authUser)throws HanZoException;
+    /*OAuth2AccessToken bindLogin(SocialBindUser bindUser, AuthUser authUser);*/
 
     /**
-     * 注册登录
+     * 注册登录--作废
      * @param registerUser
      * @param authUser
      * @return
      * @throws HanZoException
      */
-    OAuth2AccessToken signLogin(SocialBindUser registerUser, AuthUser authUser)throws HanZoException;
+    /*OAuth2AccessToken signLogin(SocialBindUser registerUser, AuthUser authUser);*/
 
 }

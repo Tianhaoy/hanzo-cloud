@@ -76,27 +76,27 @@ public class SocialController {
     }
 
     /**
-     * 绑定并登录
+     * 绑定并登录--作废
      * @param bindUser
      * @param authUser
      * @return HanZoException
      */
-    @PostMapping("bind/login")
+    /*@PostMapping("bind/login")
     public CommonResult bindLogin(@Valid SocialBindUser bindUser, AuthUser authUser) throws HanZoException {
         OAuth2AccessToken oAuth2AccessToken = this.socialLoginService.bindLogin(bindUser, authUser);
         return CommonResult.success(oAuth2AccessToken);
-    }
+    }*/
 
     /**
-     * 注册并登录
+     * 注册并登录--作废
      * @param registerUser
      * @param authUser
      * @return HanZoException
      */
-    @PostMapping("sign/login")
+    /*@PostMapping("sign/login")
     public CommonResult signLogin(@Valid SocialBindUser registerUser,AuthUser authUser) throws HanZoException {
         OAuth2AccessToken oAuth2AccessToken = this.socialLoginService.signLogin(registerUser, authUser);
         return CommonResult.success(oAuth2AccessToken);
-    }
+    }*/
 
 }

@@ -2,6 +2,7 @@ package com.hanzo.auth.configuration;
 
 import com.hanzo.auth.config.param.AnonUrlsParamConfig;
 import com.hanzo.auth.config.param.JwtParamConfig;
+import com.hanzo.common.handler.GlobalExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,5 +24,10 @@ public class AuthCommonConfiguration {
     @Bean
     AnonUrlsParamConfig anonUrlsParamConfig(){
         return new AnonUrlsParamConfig();
+    }
+
+    @Bean
+    GlobalExceptionHandler getGlobalExceptionHandler() {
+        return new GlobalExceptionHandler();
     }
 }

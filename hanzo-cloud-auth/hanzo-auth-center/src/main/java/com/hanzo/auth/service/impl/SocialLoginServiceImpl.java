@@ -3,11 +3,15 @@ package com.hanzo.auth.service.impl;
 import cn.hutool.json.JSONUtil;
 import com.hanzo.auth.config.param.JwtParamConfig;
 import com.hanzo.auth.entity.SocialBindUser;
+import com.hanzo.auth.entity.SocialUserAuth;
 import com.hanzo.auth.entity.SysSocialUser;
 import com.hanzo.auth.entity.SysUser;
 import com.hanzo.auth.manager.UserManager;
+import com.hanzo.auth.service.ISocialUserAuthService;
 import com.hanzo.auth.service.ISysSocialUserService;
 import com.hanzo.auth.service.SocialLoginService;
+import com.hanzo.auth.util.CustomTokenUtil;
+import com.hanzo.auth.vo.AccessTokenVo;
 import com.hanzo.common.api.CommonResult;
 import com.hanzo.common.constant.GrantTypeConstant;
 import com.hanzo.common.constant.ParamsConstant;
@@ -22,17 +26,16 @@ import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthRequest;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.TokenRequest;
 import org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -52,65 +55,74 @@ public class SocialLoginServiceImpl implements SocialLoginService {
     private final RedisClientDetailsService redisClientDetailsService;
     private final ResourceOwnerPasswordTokenGranter granter;
     private final PasswordEncoder passwordEncoder;
+    private final ISocialUserAuthService socialUserAuthService;
 
     @Override
-    public CommonResult resolveLogin(String oauthType, AuthCallback callback) throws HanZoException {
+    @Transactional(rollbackFor = Exception.class)
+    public CommonResult resolveLogin(String oauthType, AuthCallback callback){
         CommonResult commonResult = new CommonResult();
         AuthRequest authRequest = factory.get(oauthType);
         AuthResponse response = authRequest.login(callback);
         log.info("【response】= {}", JSONUtil.toJsonStr(response));
+        AccessTokenVo accessTokenVo;
         if (response.ok()){
             AuthUser authUser = (AuthUser) response.getData();
             SysSocialUser sysSocialUser =sysSocialUserService.selectBySocialInfo(authUser.getUuid(),authUser.getSource());
             if (sysSocialUser == null){
-                commonResult.setMessage(SocialConstant.NOT_BIND);
-                commonResult.setData(authUser);
+                //如果没有这个第三方账户 需要先保存下这个第三方账户
+                sysSocialUser= this.saveSocialInfo(authUser);
+                accessTokenVo = getTokenInfoBySocialLogin(sysSocialUser,authUser);
             }else {
-                SysUser sysUser = userManager.findSysUserByName(sysSocialUser.getUsername());
-                if (sysUser == null) {
-                    throw new HanZoException("系统中未找到与第三方账号对应的账户");
-                }else {
-                    OAuth2AccessToken oAuth2AccessToken = getOauth2AccessToken(sysUser);
-                    commonResult.setMessage(SocialConstant.SOCIAL_LOGIN_SUCCESS);
-                    commonResult.setData(oAuth2AccessToken);
-                }
+                accessTokenVo = getTokenInfoBySocialLogin(sysSocialUser,authUser);
             }
         }else {
             throw new HanZoException(String.format("第三方登录失败，%s", response.getMsg()));
         }
+        commonResult.setMessage(SocialConstant.SOCIAL_LOGIN_SUCCESS);
+        commonResult.setData(accessTokenVo);
         return commonResult;
     }
 
-    @Override
-    public OAuth2AccessToken bindLogin(SocialBindUser bindUser, AuthUser authUser) throws HanZoException {
-        SysUser sysUser = userManager.findSysUserByName(bindUser.getBindUsername());
-        if (sysUser == null || !passwordEncoder.matches(bindUser.getBindPassword(), sysUser.getPassword())) {
-            throw new HanZoException("绑定系统账号失败，用户名或密码错误！");
+    /**
+     * 第三方登录验证后 根据信息生成token
+     * @param sysSocialUser
+     * @param authUser
+     * @return
+     */
+    private AccessTokenVo getTokenInfoBySocialLogin(SysSocialUser sysSocialUser, AuthUser authUser) {
+        AccessTokenVo accessTokenVo;
+        //然后查询social_user_auth 表看有无关联信息
+        SocialUserAuth socialUserAuth = socialUserAuthService.getBySocialUserId(sysSocialUser.getSocialUserId());
+        if (socialUserAuth == null){
+            //如果等于空说明这个第三方账号没有与本地账号关联 需要先自动创建一个本地账号 给一个注册账号的角色
+            SysUser sysUser = userManager.createLocalUser(authUser);
+            //然后social_user_auth 插入一条第三方账号与本地账号关联的信息
+            if (sysUser == null) {
+                throw new HanZoException("系统中未找到与第三方账号对应的账户");
+            }else {
+                socialUserAuthService.addSocialUserAuth(sysSocialUser.getSocialUserId(),sysUser.getUserId());
+                OAuth2AccessToken oAuth2AccessToken = getOauth2AccessToken(sysUser);
+                accessTokenVo = CustomTokenUtil.custom(oAuth2AccessToken);
+            }
+        }else {
+            //如果有关联账号 继续查出来关联的本地账号的信息  --这种情况 基本不可能存在 没有第三方账号 基本不可能有关联账号
+            SysUser sysUser = userManager.findSysUserByUserId(socialUserAuth.getUserId());
+            if (sysUser == null) {
+                throw new HanZoException("系统中未找到与第三方账号对应的账户");
+            }else {
+                OAuth2AccessToken oAuth2AccessToken = getOauth2AccessToken(sysUser);
+                accessTokenVo = CustomTokenUtil.custom(oAuth2AccessToken);
+            }
         }
-        this.saveSocialBindInfo(sysUser, authUser);
-        return this.getOauth2AccessToken(sysUser);
-    }
-
-    @Override
-    public OAuth2AccessToken signLogin(SocialBindUser registerUser, AuthUser authUser) throws HanZoException {
-        SysUser sysUser = userManager.findSysUserByName(registerUser.getBindUsername());
-        if (sysUser != null) {
-            throw new HanZoException("该用户名已存在！");
-        }
-        String password = passwordEncoder.encode(registerUser.getBindPassword());
-        SysUser newUser = this.userManager.registerUser(registerUser.getBindUsername(), password);
-        this.saveSocialBindInfo(newUser, authUser);
-        return this.getOauth2AccessToken(newUser);
+        return accessTokenVo;
     }
 
     /**
-     * 保存第三方系统与hanzo系统账号的绑定信息
-     * @param sysUser
+     * 保存第三方系统信息
      * @param authUser
      */
-    private void saveSocialBindInfo(SysUser sysUser, AuthUser authUser) {
+    private SysSocialUser saveSocialInfo(AuthUser authUser) {
         SysSocialUser sysSocialUser = SysSocialUser.builder()
-                .username(sysUser.getUsername())
                 .socialName(authUser.getSource())
                 .socialUuid(authUser.getUuid())
                 .socialUserName(authUser.getUsername())
@@ -120,6 +132,8 @@ public class SocialLoginServiceImpl implements SocialLoginService {
                 .remake(authUser.getRemark())
                 .build();
         sysSocialUserService.saveSysSocialUser(sysSocialUser);
+        return sysSocialUser;
+
     }
 
     /**
@@ -150,4 +164,27 @@ public class SocialLoginServiceImpl implements SocialLoginService {
         TokenRequest tokenRequest = new TokenRequest(requestParameters, clientDetails.getClientId(), clientDetails.getScope(), grantTypes);
         return granter.grant(GrantTypeConstant.PASSWORD, tokenRequest);
     }
+
+
+    /*@Override
+    public OAuth2AccessToken bindLogin(SocialBindUser bindUser, AuthUser authUser) throws HanZoException {
+        SysUser sysUser = userManager.findSysUserByName(bindUser.getBindUsername());
+        if (sysUser == null || !passwordEncoder.matches(bindUser.getBindPassword(), sysUser.getPassword())) {
+            throw new HanZoException("绑定系统账号失败，用户名或密码错误！");
+        }
+        //this.saveSocialBindInfo(sysUser, authUser);
+        return this.getOauth2AccessToken(sysUser);
+    }
+
+    @Override
+    public OAuth2AccessToken signLogin(SocialBindUser registerUser, AuthUser authUser) throws HanZoException {
+        SysUser sysUser = userManager.findSysUserByName(registerUser.getBindUsername());
+        if (sysUser != null) {
+            throw new HanZoException("该用户名已存在！");
+        }
+        String password = passwordEncoder.encode(registerUser.getBindPassword());
+        SysUser newUser = this.userManager.registerUser(registerUser.getBindUsername(), password);
+        //this.saveSocialBindInfo(newUser, authUser);
+        return this.getOauth2AccessToken(newUser);
+    }*/
 }

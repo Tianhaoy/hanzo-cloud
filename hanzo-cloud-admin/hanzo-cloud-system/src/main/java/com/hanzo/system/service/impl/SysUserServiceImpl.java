@@ -84,6 +84,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         List<String> list = Arrays.asList(ids);
         removeByIds(list);
         deleteUserRolesByUserIds(ids);
+        //TODO 还需要删除对应的第三方账户关系表
     }
 
     @Override

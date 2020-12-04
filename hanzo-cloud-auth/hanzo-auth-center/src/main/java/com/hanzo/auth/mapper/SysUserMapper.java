@@ -22,4 +22,11 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return 用户
      */
     SysUser findSysUserByName(@Param("username") String username);
+
+    /**
+     * 根据用户id查询用户信息
+     * @param userId 用户id
+     * @return 用户
+     */
+    SysUser findSysUserByUserId(@Param("userId") Integer userId);
 }

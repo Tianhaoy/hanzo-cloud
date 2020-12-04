@@ -30,7 +30,6 @@ public class SysSocialUserServiceImpl extends ServiceImpl<SysSocialUserMapper, S
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void saveSysSocialUser(SysSocialUser sysSocialUser) {
         this.save(sysSocialUser);
     }
