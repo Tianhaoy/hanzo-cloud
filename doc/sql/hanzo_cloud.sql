@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80018
 File Encoding         : 65001
 
-Date: 2020-12-01 10:17:16
+Date: 2020-12-04 15:15:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,6 +40,21 @@ CREATE TABLE `oauth_client_details` (
 -- ----------------------------
 INSERT INTO `oauth_client_details` VALUES ('app', '', '$2a$10$8Qk/efslEpO1Af1kyw/rp.DdJGsdnET8UCp1vGDzpQEa.1qBklvua', 'all', 'refresh_token,password', '', null, '14400', '14400', null, null, '123456');
 INSERT INTO `oauth_client_details` VALUES ('hanzo', ' ', '$2a$10$aSZTvMOtUAYUQ.75z2n3ceJd6dCIk9Vy3J/SKZUE4hBLd6sz7.6ge', 'all', 'password,refresh_token', null, null, '14400', '14400', null, '0', '123456');
+
+-- ----------------------------
+-- Table structure for social_user_auth
+-- ----------------------------
+DROP TABLE IF EXISTS `social_user_auth`;
+CREATE TABLE `social_user_auth` (
+  `social_user_auth_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '系统用户id',
+  `social_user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '第三方平台主键id',
+  PRIMARY KEY (`social_user_auth_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- ----------------------------
+-- Records of social_user_auth
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_client
@@ -192,7 +207,7 @@ INSERT INTO `sys_role_menu` VALUES ('1', '8');
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_social_user`;
 CREATE TABLE `sys_social_user` (
-  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'hanzo系统用户名',
+  `social_user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '第三方账号信息主键',
   `social_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '第三方平台名称',
   `social_uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '第三方平台账户ID',
   `social_user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '第三方平台用户名',
@@ -200,13 +215,12 @@ CREATE TABLE `sys_social_user` (
   `social_image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '第三方平台头像',
   `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '地址',
   `remake` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`username`,`social_name`,`social_uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='第三方登录与系统内部用户绑定表';
+  PRIMARY KEY (`social_user_id`,`social_name`,`social_uuid`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='第三方登录与系统内部用户绑定表';
 
 -- ----------------------------
 -- Records of sys_social_user
 -- ----------------------------
-INSERT INTO `sys_social_user` VALUES ('hanzo-test', 'GITHUB', '45312497', 'Tianhaoy', '', null, null, null);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -229,7 +243,7 @@ CREATE TABLE `sys_user` (
   `avatar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '头像',
   `description` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='用户表';
 
 -- ----------------------------
 -- Records of sys_user
@@ -253,3 +267,7 @@ INSERT INTO `sys_user_role` VALUES ('1', '1');
 INSERT INTO `sys_user_role` VALUES ('1', '2');
 INSERT INTO `sys_user_role` VALUES ('10', '1');
 INSERT INTO `sys_user_role` VALUES ('10', '2');
+INSERT INTO `sys_user_role` VALUES ('11', '3');
+INSERT INTO `sys_user_role` VALUES ('12', '3');
+INSERT INTO `sys_user_role` VALUES ('13', '3');
+INSERT INTO `sys_user_role` VALUES ('14', '3');
