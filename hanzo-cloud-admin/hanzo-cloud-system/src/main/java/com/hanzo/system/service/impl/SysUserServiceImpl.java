@@ -3,13 +3,19 @@ package com.hanzo.system.service.impl;
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.PageHelper;
+import com.hanzo.client.util.AuthUtil;
 import com.hanzo.common.constant.CommonConstants;
 import com.hanzo.common.constant.StringConstants;
+import com.hanzo.common.context.BaseUserContext;
+import com.hanzo.common.exception.HanZoException;
+import com.hanzo.common.model.HanZoLoginUser;
 import com.hanzo.system.dto.SysUserQueryParam;
 import com.hanzo.system.dto.SysUserUpdateProfileParam;
+import com.hanzo.system.entity.SocialUserAuth;
 import com.hanzo.system.entity.SysUser;
 import com.hanzo.system.entity.SysUserRole;
 import com.hanzo.system.mapper.SysUserMapper;
+import com.hanzo.system.service.ISocialUserAuthService;
 import com.hanzo.system.service.ISysUserRoleService;
 import com.hanzo.system.service.ISysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -43,6 +49,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private SysUserMapper sysUserMapper;
     @Autowired
     private ISysUserRoleService sysUserRoleService;
+    @Autowired
+    private ISocialUserAuthService socialUserAuthService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -84,15 +92,20 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         List<String> list = Arrays.asList(ids);
         removeByIds(list);
         deleteUserRolesByUserIds(ids);
-        //TODO 还需要删除对应的第三方账户关系表
+        deleteSocialUserAuthByUserIds(ids);
     }
 
     @Override
     public void updateProfile(SysUserUpdateProfileParam sysUserUpdateProfileParam) {
-        SysUser sysUser = new SysUser();
-        BeanUtils.copyProperties(sysUserUpdateProfileParam,sysUser);
-        //TODO 后期需要根据oauth2判断下当前登录用户是否与要修改的用户一致 获取在线用户信息
-        updateById(sysUser);
+        //判断下当前登录用户是否与要修改的用户一致
+        if (AuthUtil.getLoginUserInfo() !=null && AuthUtil.getLoginUserInfo().getUserId().equals(sysUserUpdateProfileParam.getUserId())){
+            SysUser sysUser = new SysUser();
+            BeanUtils.copyProperties(sysUserUpdateProfileParam,sysUser);
+            updateById(sysUser);
+        }else {
+            throw new HanZoException("登录用户与修改信息的用户不一致");
+        }
+
     }
 
     @Override
@@ -100,8 +113,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser sysUserUpdateAvatarParam = SysUser.builder()
                 .avatar(avatar)
                 .build();
-        //TODO 后期需要从oauth2中获取当前用户id
-        Integer userId = 1;
+        //从上下文中获取当前用户id
+        Integer userId = AuthUtil.getLoginUserInfo().getUserId();
         LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysUser::getUserId,userId);
         update(sysUserUpdateAvatarParam,queryWrapper);
@@ -109,8 +122,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public boolean checkPassword(String password) {
-        //TODO 后期需要从oauth2中获取当前用户id
-        Integer userId = 10;
+        //从上下文中获取当前用户id
+        Integer userId = AuthUtil.getLoginUserInfo().getUserId();
         LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysUser::getUserId,userId);
         SysUser sysUser = getOne(queryWrapper);
@@ -122,8 +135,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser sysUserUpdatePasswordParam = SysUser.builder()
                 .password(passwordEncoder.encode(password))
                 .build();
-        //TODO 后期需要从oauth2中获取当前用户id
-        Integer userId = 1;
+        //从上下文中获取当前用户id
+        Integer userId = AuthUtil.getLoginUserInfo().getUserId();
         LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysUser::getUserId,userId);
         update(sysUserUpdatePasswordParam,queryWrapper);
@@ -168,6 +181,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         LambdaQueryWrapper<SysUserRole> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(SysUserRole::getUserId, list);
         sysUserRoleService.remove(queryWrapper);
+    }
+
+    /**
+     * 根据userId删除第三方与系统用户关联表
+     * @param userIds
+     */
+    private void deleteSocialUserAuthByUserIds(String[] userIds) {
+        List<String> list = Arrays.asList(userIds);
+        LambdaQueryWrapper<SocialUserAuth> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(SocialUserAuth::getUserId, list);
+        socialUserAuthService.remove(queryWrapper);
     }
 
     /**

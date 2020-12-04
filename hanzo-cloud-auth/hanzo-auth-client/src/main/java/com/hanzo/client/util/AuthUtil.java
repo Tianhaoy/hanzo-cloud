@@ -1,5 +1,7 @@
 package com.hanzo.client.util;
 
+import com.hanzo.common.context.BaseUserContext;
+import com.hanzo.common.model.HanZoLoginUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,4 +42,9 @@ public class AuthUtil {
         return (LinkedHashMap<String, Object>) getOauth2Authentication().getUserAuthentication().getDetails();
     }
 
+    public static HanZoLoginUser getLoginUserInfo() {
+        //使用解析token放到上下文中的userId
+        HanZoLoginUser loginUser = BaseUserContext.getUser();
+        return loginUser;
+    }
 }
