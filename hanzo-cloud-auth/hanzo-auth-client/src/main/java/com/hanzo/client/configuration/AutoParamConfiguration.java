@@ -80,7 +80,7 @@ public class AutoParamConfiguration {
         return new HanZoAuthExceptionEntryPoint();
     }
 
-    @Bean
+    /*@Bean
     public RequestInterceptor oauth2FeignRequestInterceptor() {
         return requestTemplate -> {
             String gatewayToken = new String(Base64Utils.encode(AuthConstants.GATEWAY_TOKEN_VALUE.getBytes()));
@@ -90,5 +90,5 @@ public class AutoParamConfiguration {
                 requestTemplate.header(HttpHeaders.AUTHORIZATION, AuthConstants.OAUTH2_TOKEN_TYPE + authorizationToken);
             }
         };
-    }
+    }*/
 }

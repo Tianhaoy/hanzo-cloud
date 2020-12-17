@@ -80,6 +80,14 @@ spring:
               args:
                 name: fallbackcmd
                 fallbackUri: forward:/fallBack/hanzo-auth-center
+
+
+hanzo:
+  request:
+    trace: true
+    ip: false
+    enhance: false
+
 secure:
   ignore:
     urls: #配置白名单路径

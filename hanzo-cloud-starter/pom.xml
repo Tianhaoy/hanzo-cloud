@@ -13,6 +13,7 @@
 
     <modules>
         <module>hanzo-starter-kafka</module>
+        <module>hanzo-starter-log</module>
     </modules>
 
     <!--构建工具-->

@@ -1,0 +1,55 @@
+server:
+  port: 6601
+
+spring:
+  #jackson转化
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    visibility:
+      GETTER: NONE
+      SETTER: NONE
+      FIELD: ANY # JSON序列化的key以属性名显示为主
+    default-property-inclusion: non_null
+
+#  main:
+#    allow-bean-definition-overriding: true
+
+  # mybatis 配置
+  #mybatis:
+  #mapper-locations: classpath:mapper/*.xml
+
+#mybatis-plus配置
+#mybatis-plus:
+#  type-aliases-package: com.hanzo.system.entity
+#  mapper-locations: classpath*:/mapper/*.xml
+#  #  开启数据库驼峰转换
+#  configuration:
+#    map-underscore-to-camel-case: true
+#    jdbc-type-for-null: null #指定为null，否则再插入空值时会报"无效的列类型"错误
+#  #关闭MyBatis Plus Banner打印
+#  global-config:
+#    banner: false
+
+#接口文档信息配置
+##使用接口文档的情况下 必须配置 需额外引入自定义公共swagger注解
+swagger2:
+  knife4j:
+    apiBasePackage: com.hanzo.system.controller
+    enableSecurity: false
+    title: hanzo-knife4j-logProducter
+    description: kafka日志生产者-API文档
+    version: 1.0
+    contactName: thy
+    contactUrl: http://blog.babehome.com
+    contactEmail: 246965218@qq.com
+
+#授权client相关配置 enable 固定为true  onlyFetchByGateway 只允许从网关进入  anonUris不带token也可以访问路径
+hanzo:
+  cloud:
+    security:
+      enable: true
+      onlyFetchByGateway: false
+      anonUris: /actuator/**,/v2/api-docs,/v2/api-docs-ext,/resource/**
+
+
