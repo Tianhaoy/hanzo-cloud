@@ -1,5 +1,7 @@
 package com.hanzo.starter.log.config;
 
+import com.hanzo.common.api.CommonResult;
+import com.hanzo.common.dto.CommonLog;
 import com.hanzo.starter.log.aspect.LogAspect;
 import com.hanzo.starter.log.event.LogListener;
 import com.hanzo.starter.log.feign.CommonLogProvider;
@@ -43,4 +45,5 @@ public class LogConfiguration {
     public LogAspect logAspect(ApplicationContext applicationContext){
         return new LogAspect(applicationContext);
     }
+
 }

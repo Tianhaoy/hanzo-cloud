@@ -28,7 +28,7 @@ public class IPUtil {
      */
     public static String getHttpCityInfo(String ip) {
         String api = String.format("http://whois.pconline.com.cn/ipJson.jsp?ip=%s&json=true",ip);
-        JSONObject object = JSON.parseObject((String) HttpUtil.getRequest(api, "gbk"));
+        JSONObject object = JSON.parseObject((String) HttpRequestUtil.getRequest(api, "gbk"));
         return object.getString("addr");
     }
 

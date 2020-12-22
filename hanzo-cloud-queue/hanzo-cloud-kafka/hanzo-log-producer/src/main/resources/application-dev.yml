@@ -33,23 +33,23 @@ spring:
 
 #接口文档信息配置
 ##使用接口文档的情况下 必须配置 需额外引入自定义公共swagger注解
-swagger2:
-  knife4j:
-    apiBasePackage: com.hanzo.system.controller
-    enableSecurity: false
-    title: hanzo-knife4j-logProducter
-    description: kafka日志生产者-API文档
-    version: 1.0
-    contactName: thy
-    contactUrl: http://blog.babehome.com
-    contactEmail: 246965218@qq.com
+#swagger2:
+#  knife4j:
+#    apiBasePackage: com.hanzo.system.controller
+#    enableSecurity: false
+#    title: hanzo-knife4j-logProducter
+#    description: kafka日志生产者-API文档
+#    version: 1.0
+#    contactName: thy
+#    contactUrl: http://blog.babehome.com
+#    contactEmail: 246965218@qq.com
 
 #授权client相关配置 enable 固定为true  onlyFetchByGateway 只允许从网关进入  anonUris不带token也可以访问路径
-hanzo:
-  cloud:
-    security:
-      enable: true
-      onlyFetchByGateway: false
-      anonUris: /actuator/**,/v2/api-docs,/v2/api-docs-ext,/resource/**
+#hanzo:
+#  cloud:
+#    security:
+#      enable: true
+#      onlyFetchByGateway: false
+#      anonUris: /actuator/**,/v2/api-docs,/v2/api-docs-ext,/resource/**
 
 

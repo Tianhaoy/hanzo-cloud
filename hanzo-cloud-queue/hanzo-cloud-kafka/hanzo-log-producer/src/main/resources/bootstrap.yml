@@ -2,7 +2,7 @@ spring:
   profiles:
     active: dev
   application:
-    name: @artifactId@
+    name: hanzo-log-producer
 
 
 #开启SpringBoot Admin的监控

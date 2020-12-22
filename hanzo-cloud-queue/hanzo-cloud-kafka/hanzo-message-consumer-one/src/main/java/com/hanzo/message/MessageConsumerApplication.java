@@ -1,6 +1,7 @@
 package com.hanzo.message;
 
-import com.hanzo.starter.kafka.channel.LogChannel;
+import com.hanzo.common.EnableHanzoRunnerCommonClient;
+import com.hanzo.starter.kafka.channel.InPutLogChannel;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -13,7 +14,8 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
  * @Description:消息中心消费者启动类
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
-@EnableBinding({LogChannel.class})
+@EnableHanzoRunnerCommonClient
+@EnableBinding({InPutLogChannel.class})
 public class MessageConsumerApplication {
     public static void main(String[] args) {
         SpringApplication.run(MessageConsumerApplication.class, args);

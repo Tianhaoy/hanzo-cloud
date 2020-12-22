@@ -4,7 +4,9 @@ import com.hanzo.common.dto.CommonLog;
 import com.hanzo.starter.log.feign.CommonLogProvider;
 import com.hanzo.starter.log.properties.LogMqType;
 import com.hanzo.starter.log.properties.LogProperties;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
@@ -26,6 +28,7 @@ public class LogListener {
         this.commonLogProvider = commonLogProvider;
         this.logProperties = logProperties;
     }
+
 
     @Async
     @Order

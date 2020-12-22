@@ -1,7 +1,7 @@
 package com.hanzo.message.consumer;
 
 import com.hanzo.common.dto.CommonLog;
-import com.hanzo.starter.kafka.channel.LogChannel;
+import com.hanzo.starter.kafka.channel.InPutLogChannel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class LogMessageConsumer {
 
-    @StreamListener(LogChannel.LOG_INPUT)
+    @StreamListener(InPutLogChannel.LOG_INPUT)
     public void handler(@Payload CommonLog commonLog) {
         //TODO 需要存到mysql 或者es
         log.info(String.format("consume: %s", commonLog) + ",receive time:" +System.nanoTime());

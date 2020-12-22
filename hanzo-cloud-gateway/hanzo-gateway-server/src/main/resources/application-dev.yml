@@ -80,6 +80,28 @@ spring:
               args:
                 name: fallbackcmd
                 fallbackUri: forward:/fallBack/hanzo-auth-center
+        - id: hanzo-log-producer
+          uri: lb://hanzo-log-producer #匹配后路由地址 lb代表从注册中心获取服务
+          order: 7002
+          predicates: # 路由条件 断言，路径相匹配的进行路由
+            - Path=/api/log/**
+          filters:
+            - StripPrefix=2
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/fallBack/hanzo-log-producer
+        - id: hanzo-message-consumer-one
+          uri: lb://hanzo-message-consumer-one #匹配后路由地址 lb代表从注册中心获取服务
+          order: 7002
+          predicates: # 路由条件 断言，路径相匹配的进行路由
+            - Path=/api/msgone/**
+          filters:
+            - StripPrefix=2
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/fallBack/hanzo-message-consumer-one
 
 
 hanzo:

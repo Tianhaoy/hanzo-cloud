@@ -5,9 +5,11 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.hanzo.common.api.CommonPage;
 import com.hanzo.common.api.CommonResult;
 import com.hanzo.common.context.BaseUserContext;
+import com.hanzo.common.dto.CommonLog;
 import com.hanzo.system.dto.SysUserQueryParam;
 import com.hanzo.system.dto.SysUserUpdateProfileParam;
 import com.hanzo.system.entity.SysUser;
+import com.hanzo.system.feign.CommonLogFeignProvider;
 import com.hanzo.system.service.ISysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,12 +38,17 @@ public class SysUserController {
 
     @Autowired
     private ISysUserService sysUserService;
+    @Autowired
+    private CommonLogFeignProvider commonLogFeignProvider;
 
     @ApiOperation("获取用户信息")
     @PreAuthorize("hasAuthority('user:list')")
     @PostMapping(value = "/getUserList",produces = "application/json;charset=UTF-8")
     public CommonResult getUserList(@RequestBody SysUserQueryParam sysUserQueryParam){
         log.info(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        CommonLog commonLog= new CommonLog();
+        commonLog.setCreateBy(BaseUserContext.getUser().getUsername());
+        commonLogFeignProvider.sendCommonLog(commonLog);
         return CommonResult.success(CommonPage.restPage(sysUserService.findUserDetailList(sysUserQueryParam)));
     }
 

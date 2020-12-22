@@ -1,8 +1,7 @@
 package com.hanzo.log;
 
-import com.hanzo.client.EnableHanzoAuthClient;
 import com.hanzo.common.EnableHanzoRunnerCommonClient;
-import com.hanzo.starter.kafka.channel.LogChannel;
+import com.hanzo.starter.kafka.channel.OutPutLogChannel;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -20,7 +19,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableHanzoRunnerCommonClient
-@EnableBinding(LogChannel.class)
+@EnableBinding(OutPutLogChannel.class)
 public class LogProducerApplication {
     public static void main(String[] args) {
         SpringApplication.run(LogProducerApplication.class, args);
