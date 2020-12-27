@@ -21,7 +21,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogListener {
 
+    @Autowired
     private CommonLogProvider commonLogProvider;
+    @Autowired
     private final LogProperties logProperties;
 
     public LogListener(CommonLogProvider commonLogProvider, LogProperties logProperties) {
@@ -35,7 +37,6 @@ public class LogListener {
     @EventListener(LogEvent.class)
     public void saveSysLog(LogEvent event) {
         CommonLog commonLog = (CommonLog) event.getSource();
-        // 发送日志到kafka
         log.info("发送日志:{}", commonLog);
         if (logProperties.getLogMqType().equals(LogMqType.KAFKA)) {
             commonLogProvider.sendCommonLog(commonLog);

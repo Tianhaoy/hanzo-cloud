@@ -13,7 +13,7 @@ import java.util.Properties;
 
 /**
  * 加载yml格式的自定义配置文件
- * @author aristotle
+ * @author thy
  * @link https://blog.csdn.net/zxl8899/article/details/106382719/
  */
 @AllArgsConstructor
