@@ -5,45 +5,49 @@
 ### 功能特点
 - 主体框架：采用SpringCloud、SpringBoot、Nacos、Gateway、OpenFegin、Ribbon、Hystrix(后期会采用sentienl)、JWT Token、Mybatis Plus、Mysql、Redis、ElasticSearch、RabbitMQ、kafka、RocketMQ、Seata、FastDFS等主要框架和中间件
 
-- 统一注册：采用Nacos作为注册中心
+- 统一注册：采用Nacos作为注册中心（已实现）
 
-- 统一认证：统一Oauth2认证协议，采用jwt的方式，实现统一认证
+- 统一认证：统一Oauth2认证协议，采用jwt的方式，实现统一认证（已实现）
 
-- 业务监控：利用Spring Boot Admin 来监控各个独立Service的运行状态
+- 业务监控：利用Spring Boot Admin 来监控各个独立Service的运行状态（已实现）
 
-- 内部调用：集成了openfeign
+- 内部调用：集成了openfeign（已实现）
 
-- 消息驱动：stream事件驱动
+- 消息驱动：stream事件驱动操作消息队列（已实现）
 
-- 业务熔断：采用Sentinel实现业务熔断处理，避免服务之间出现雪崩(目前使用的hystrix)
+- 业务熔断：采用Sentinel实现业务熔断处理，避免服务之间出现雪崩(目前使用的hystrix)（未实现）
 
-- 在线文档：通过接入knife4j，实现在线API文档的查看与调试;
+- 在线文档：通过接入knife4j，实现在线API文档的查看与调试（已实现）
 
-- 代码生成：基于Mybatis-plus-generator自动生成代码，提升开发效率，选择数据源，选择表结构，一键生成后端代码。
+- 代码生成：基于Mybatis-plus-generator自动生成代码，提升开发效率，选择数据源，选择表结构，一键生成后端代码。（未实现）
 
-- 消息中心：集成消息中间件kafka、RabbitMQ、RocketMQ，对业务进行异步处理;
+- 消息中心：集成消息中间件kafka、RabbitMQ、RocketMQ，对业务进行异步处理;（已实现kafka）
 
 - 业务分离：采用前后端分离的框架设计，前端打算采用vue-element-admin（我不会前端，希望能有前端大佬一起合作开发，~~~~(>_<)~~~~）
 
-- 链式追踪：自定义traceId的方式，实现简单的链路追踪功能
+- 链式追踪：自定义traceId的方式，实现简单的链路追踪功能（已实现 通过网关生成traceId来定位微服务模块调用的链路追踪）
 
-- 对象存储：OSS
+- 对象存储：OSS（未实现）
 
-- 分布式定时任务：采用xxl-job中间件进行任务调度
+- 分布式定时任务：采用xxl-job中间件进行任务调度（未实现）
 
-- 搜索引擎：采用elasticsearch搜索引擎实现搜索功能。
+- 搜索引擎：采用elasticsearch搜索引擎实现搜索功能。（未实现）
 
-- 自动化运维：docker,Jenkins,K8s
+- 自动化运维：docker,Jenkins,K8s（未实现）
 
 
 ### 开发中
-    hanzo-gateway-server 网关
-    hanzo-auth-center 认证中心
-    hanzo-auth-client 授权客户端jar包
-    hanzo-cloud-system 系统管理模块
-    hanzo-cloud-monitor 监控模块
-    这五个模块开发完毕
-    启动gateway center system monitor这四个模块即可 
+    hanzo-gateway-server --网关
+    hanzo-auth-center --认证中心
+    hanzo-auth-client --授权客户端jar包
+    hanzo-cloud-system --系统管理模块
+    hanzo-cloud-monitor --监控模块
+    hanzo-log-producer -- 请求日志队列生产者模块
+    hanzo-message-consumer-one -- kafka消息消费者模块1
+    hanzo-starter-kafka -- kafka-starter子模块
+    hanzo-starter-log -- log-starter子模块
+    这些模块开发完毕
+    依次启动gateway center system monitor 。。。
    
 ## 导入项目、登录访问接口流程以及开发文档地址 (请仔细阅读文档启动，文档最后有微信联系方式，启动失败可以加微信入群讨论)
    [https://www.kancloud.cn/hanzo/hanzo](https://www.kancloud.cn/hanzo/hanzo)
@@ -97,11 +101,14 @@ hanzo-cloud -- 父项目,各模块分离，方便集成和微服务
 │  │─hanzo-cloud-msg -- 短信模块
 │  │─hanzo-cloud-queue -- 消息队列父模块
 │  │  ├─hanzo-cloud-kafka -- kafka消息队列子模块
+│  │  │  ├─hanzo-log-producer -- 请求日志生产者模块
+│  │  │  ├─hanzo-message-consumer-one -- kafka消息消费者模块1
 │  │  ├─hanzo-cloud-rabbitmq -- rabbitmq消息队列子模块
 │  │  ├─hanzo-cloud-rocketmq -- rocketmq消息队列子模块
 │  │─hanzo-cloud-search -- 搜索父模块
 │  │  ├─hanzo-cloud-elasticsearch -- es搜索引擎子模块
 │  │─hanzo-cloud-starter -- starter公共父模块
 │  │  ├─hanzo-starter-kafka -- kafka-starter子模块
+│  │  ├─hanzo-starter-log -- log-starter子模块
 ```
 
