@@ -36,7 +36,7 @@ public class LogConfiguration {
         if (logProperties.getLogMqType().equals(LogMqType.KAFKA)) {
             return new LogListener(commonLogProvider, logProperties);
         }
-         //目前只通过kafka的方式记录
+        //目前只通过kafka的方式记录
         return new LogListener(commonLogProvider, logProperties);
     }
 
