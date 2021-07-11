@@ -47,7 +47,7 @@ public class HanZoResourceServerConfigure extends ResourceServerConfigurerAdapte
         }
         System.out.println(accessDeniedHandler);
         http.csrf().disable()
-                //异常的时候处理 返回SC_UNAUTHORIZED --> 401状态码未授权异常 有问题 竟然捕获不到很奇怪AccessDeniedException
+                //异常的时候处理 返回SC_UNAUTHORIZED --> 401状态码未授权异常 有问题 竟然捕获不到很奇怪AccessDeniedException 已解决
                 .exceptionHandling()
                 .authenticationEntryPoint(new HanZoAuthExceptionEntryPoint())
                 .accessDeniedHandler(new HanZoAccessDeniedHandler())

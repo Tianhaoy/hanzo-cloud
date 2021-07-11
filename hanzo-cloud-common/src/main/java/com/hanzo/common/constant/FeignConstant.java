@@ -10,5 +10,5 @@ public interface FeignConstant {
     /**
      * log消息生产者
      */
-    public final String HANZO_LOG_PRODUCER = "hanzo-log-producer";
+    String HANZO_LOG_PRODUCER = "hanzo-log-producer";
 }

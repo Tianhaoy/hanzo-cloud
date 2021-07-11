@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @Author thy
  * @Date 2020/11/7 16:47
- * @Description:
+ * @Description:AuthenticationEntryPoint 用来解决匿名用户访问无权限资源时的异常
  */
 @Slf4j
 public class HanZoAuthExceptionEntryPoint implements AuthenticationEntryPoint {
