@@ -19,7 +19,7 @@
 
 - 在线文档：通过接入knife4j，实现在线API文档的查看与调试（已实现）
 
-- 代码生成：基于Mybatis-plus-generator自动生成代码，提升开发效率，选择数据源，选择表结构，一键生成后端代码。（未实现）
+- 代码生成：基于Mybatis-plus-generator自动生成代码，提升开发效率，选择数据源，，一键生成选择表结构后端代码。（未实现）
 
 - 消息中心：集成消息中间件kafka、RabbitMQ、RocketMQ，对业务进行异步处理;（已实现kafka）
 
@@ -112,3 +112,4 @@ hanzo-cloud -- 父项目,各模块分离，方便集成和微服务
 │  │  ├─hanzo-starter-log -- log-starter子模块
 ```
 
+-- 2021-1.1 新年重新开始干
