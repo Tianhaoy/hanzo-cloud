@@ -8,6 +8,11 @@ spring:
   profiles:
     active: dev
 
+  thymeleaf:
+    prefix: classpath:/templates/
+    cache: false
+    mode: LEGACYHTML5
+
 #logback
 logging:
   level:

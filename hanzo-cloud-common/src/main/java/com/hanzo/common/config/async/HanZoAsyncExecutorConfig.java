@@ -17,7 +17,7 @@ public class HanZoAsyncExecutorConfig {
     @Autowired
     private AsyncParamConfig asyncParamConfig;
 
-    @Bean("${asyncParamConfig.beanName}")
+    @Bean("${hanZoAsync.beanName}")
     public Executor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(asyncParamConfig.getCorePoolSize());//配置核心线程数
